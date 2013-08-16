@@ -1,50 +1,17 @@
 <?php
-session_start();
-require_once 'model.php';
-	$name = '';
-	$title = '';
-	$created = time();
-	$modified = time();	
-	$day = '';
-	$month = '';
-	$year = '';
-	
- 	 if(isset($_POST['name']))
-    {
-        $name = $_POST['name'];
-    }
-	 if(isset($_POST['title']))
-    {
-        $title = $_POST['title'];
-    }
-	 if(isset($_POST['day']))
-    {
-        $day = $_POST['day'];
-    }
-	 if(isset($_POST['month']))
-    {
-        $month = $_POST['month'];
-    }
-	 if(isset($_POST['year']))
-    {
-        $year = $_POST['year'];
-    }
-	$created = mktime(0,0,0, $month, $day, $year);
-	$modified = mktime(0,0,0, $month, $day, $year);
-	if($name != '' && $title=='admin')
-	{
-		$data = array(
-						'id' => $id,
-						'name'=> $name,
-						'title'=> $title,
-						'created'=> $created,
-						'modified'=> $modified);
-		if(insert($data) !==false)
-		{
-			$is_success = $data['id'];
-		}
-	}
-	else
-	{
-		$error_name = 201;
-	}
+
+require_once('employee_model.php');
+
+$data = array();
+$data['name'] = 'hien';
+$data['title'] = 'admin';
+$data['created'] = '2013-09-08 09:11:00';
+$data['modified'] = '2013-09-08 09:11:00';
+//date_default_timezone_set('VietNam/HoChiMinh');
+//$data['created'] = date('m/d/Y h:i:s', time());
+//$data['modified'] = date('m/d/Y h:i:s', time());
+
+$employee = new employee_model();
+$result = $employee -> insert($data);
+
+print_r($result);
