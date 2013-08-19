@@ -1,8 +1,13 @@
 <?php
 require_once('employee_model.php');
-$id = 2;
+$id = 5;
  
 $employee = new employee_model();
 //$result = $employee -> select_by_id();
-$employee ->select_by_id($id);
+$row = $employee ->select_by_id($id);
+//$employee->select_all();
+		if(!empty($row))
+		{
+			print_r($row);
+		}else echo " id no exit";
 

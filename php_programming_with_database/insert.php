@@ -4,15 +4,17 @@ require_once('employee_model.php');
 
 $data = array();
 
-$data['name'] = 'hien';
+$data['name'] = 'test time';
 $data['title'] = 'admin';
-$data['created'] = '2013-09-08 09:11:00';
-$data['modified'] = '2013-09-08 09:11:00';
-//date_default_timezone_set('VietNam/HoChiMinh');
+$day = time();
+date_default_timezone_set('Asia/Bangkok');
+$data['created'] = date('Y-m-d H:i:s', $day);
+$data['modified'] = date('Y-m-d H:i:s', $day);
+
 //$data['created'] = date('m/d/Y h:i:s', time());
 //$data['modified'] = date('m/d/Y h:i:s', time());
 
 $employee = new employee_model();
-$result = $employee -> insert($data);
+echo $employee -> insert($data);
 
-print_r($result);
+//print_r($result);
