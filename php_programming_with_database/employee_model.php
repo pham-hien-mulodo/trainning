@@ -46,14 +46,14 @@ class employee_model
 		$hostname = "localhost";
 		$username = "root";
 		$password = "";
-		$database ="php_basics";
-		$dbcon = mysql_connect($hostname, $username, $password) or die ("ko ket noi den mysql");
-		$selected = mysql_select_db($database,$dbcon) or die("ko the lay php_basics");
-		//check exit id
-		$sql = "update employee set name = 'hien update' , title = 'admin', modified = '2013-09-08 09:11:00' where id=7";
-		//$sql = "UPDATE employee SET name = '".$data['name']."', title = '".$data['title']."', modified = '".$data['modified']."' WHERE id='".$data['id']."'";
-		$result = mysql_query($sql);
+		$database = "php_basics";
+		$dbcon = mysql_connect($hostname, $username, $password) or die (" no connect");
+		$selected = mysql_select_db($database, $dbcon) or die ("no database");
+		$sql = "update employee set name = '".$data['name']."', title = '".$data['title']."' , modified = '".$data['modified']."' where id = '".$data['id']."'";
+		$result = mysql_query($sql);
+		$count = mysql_affected_rows();
 		mysql_close($dbcon);
+		return $count;
 	}
 
 /////////////SELECT_BY_ID////////////
@@ -69,7 +69,6 @@ class employee_model
 		$result = mysql_query("SELECT * FROM employee WHERE id=$id");
 		$row = mysql_fetch_array($result, MYSQL_ASSOC);
 		mysql_close($dbcon);
-
 		return $row;
 	}
 
@@ -96,7 +95,7 @@ class employee_model
 			print_r($result['name']);
 		}
 		else echo mysql_error();
-	
+			//$sql = "UPDATE employee SET name = '".$data['name']."', title = '".$data['title']."', modified = '".$data['modified']."' WHERE id='".$data['id']."'";
 	}
 */
 //////////DATA///////////
