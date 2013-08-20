@@ -1,7 +1,9 @@
 <?php
 require_once('employee_model.php');
-$id = 7;
+$id = '201';
 
 $employee = new employee_model();
-echo $employee -> delete($id);
+echo $employee->delete($id);
+
+//echo $employee -> validation_delete($id);
 //echo $result;
