@@ -2,7 +2,7 @@
 
 class employee_model
 {
-/*		
+
 //////////////DELETE///////////////
 
 	public function delete($id)
@@ -44,7 +44,6 @@ class employee_model
 
 	public function update($data)
 	{
-		$this->validation($data);
 		$hostname = "localhost";
 		$username = "root";
 		$password = "";
@@ -74,185 +73,89 @@ class employee_model
 		return $row;
 	}
 ///////////VALIDATION///////////////
-	public function validation($data, $process)
+	public function validation($data,$process)
 	{
-		$code = '200';
-		$message ='';
-		switch($process){
-		case "insert":
-				if(!empty($data['id']) &&  !empty($data['name']) && !empty($data['title']) && !empty($data['modified']))
+		if($process=='delete')
 		{
-			if(!preg_match('/^[a-zA-Z0-9]{1,20}$/',$data['name']) || !preg_match('/^[a-zA-Z0-9]{1,20}$/',$data['title']) || !preg_match('/(\d{4})-(\d{2})-(\d{2})/', $data['created']) || !preg_match('/(\d{4})-(\d{2})-(\d{2})/', $data['modified']))
+			$result = $this->valid_int($data['id']);
+			return $result;
+		}
+		if($process == 'update')
+		{
+			$result = array(
+			'id' => $this->valid_int($data['id']),
+			'name' => $this->valid_string($data['name'], 1,20),
+			'title' => $this->valid_string($data['title'], 1,15),
+			'modified' => $this->valid_date($data['modified'])
+			);
+			print_r($result);
+			foreach($result as $result1)
 			{
-				$code = '202';
-				$message = 'data type incorrect';
+				if(preg_match('/[0]/',$result1))
+				{
+					return 0;
+				}
 			}
+			return 1;
 		}
-		else 
+		if($process == 'insert')
 		{
-			$code = '201';
-			$message = 'have fied data null';
-		}
-		break ;
-		case "update":
-		if(!empty($data['id']) &&  !empty($data['name']) && !empty($data['title']) && !empty($data['modified']))
-		{
-			if(!preg_match('/^[0-9]{1,11}$/',$data['id']) || !preg_match('/^[a-zA-Z0-9]{1,20}$/',$data['name']) || !preg_match('/^[a-zA-Z0-9]{1,20}$/',$data['title']) || !preg_match('/(\d{4})-(\d{2})-(\d{2})/', $data['modified']))
+			$result = array(
+			'created' => $this->valid_date($data['created']),
+			'name' => $this->valid_string($data['name'], 1,20),
+			'title' => $this->valid_string($data['title'], 1,15),
+			'modified' => $this->valid_date($data['modified'])
+			);
+			print_r($result);
+			foreach($result as $result1)
 			{
-				$code = '202';
-				$message = 'data type incorrect';
+				if(preg_match('/[0]/',$result1))
+				{
+					return 0;
+				}
 			}
+			return 1;
 		}
-		else 
-		{
-			$code = '201';
-			$message = 'have fied data null';
-		}
-		break ;
-		case "delete":
-		if(!empty($data['id']))
-		{
-			if(!preg_match('/^[0-9]{1,11}$/',$data['id']))
-			{
-				$code = '202';
-				$message = 'data type incorrect';
-			}
-		}
-		else
-		{
-			 $code= '201';
-			 $message = 'have fied data null';
-		}
-		break ;
-		}
-	
 	}
-	public function validation_insert($data)
+	public function valid_string($data, $minlength, $maxleng)
 	{
-		$code = '200';
-		$message = 'true';
-		if(!empty($data['id']) &&  !empty($data['name']) && !empty($data['title']) && !empty($data['modified']))
+		$daty = trim($data);
+		if(!empty($daty))
 		{
-			if(!preg_match('/^[a-zA-Z0-9]{1,20}$/',$data['name']) || !preg_match('/^[a-zA-Z0-9]{1,20}$/',$data['title']) || !preg_match('/(\d{4})-(\d{2})-(\d{2})/', $data['created']) || !preg_match('/(\d{4})-(\d{2})-(\d{2})/', $data['modified']))
+			if(strlen($data)>= $minlength && strlen($data)<=$maxleng)
 			{
-				$code = '202';
-				$message = 'data type incorrect';
+				if(!preg_match('/[!@#$%^&*()<>,.;:\|}{?]/',$data))
+				{ 	
+					return 1;
+				}
 			}
 		}
-		else 
-		{
-			$code = '201';
-			$message = 'have fied data null';
-		}
-		$result = array('code'=>$code, 'message'=>$message);
-		return $result;
-	}*/
-	public function validation_update($data)
-	{
-		echo $data['modified'];
-		$code = '200';
-		if(!empty($data['id']) &&  !empty($data['name']) && !empty($data['title']) && !empty($data['modified']))
-		{
-			if(!preg_match('/^[0-9]{1,11}$/',$data['id']) || !preg_match('/^[a-zA-Z0-9]{1,20}$/',$data['name']) || !preg_match('/^[a-zA-Z0-9]{1,20}$/',$data['title']) || !preg_match("/^(\d{4})-(\d{2})-(\d{2}) ([01][0-9]|2[0-3]):([0-5][0-9]):([0-5][0-9])$/",$data['modified']))
-			{
-				$code = '202';
-			}
-		}
-		else 
-		{
-			$code = '201';
-		}
-		return $code;
+		return 0;
 	}
-	public function validation_delete($id)
+	public function valid_date($data)
 	{
-		$code ='200';
-		$message = '';
+		$daty = trim($data);
+		if(!empty($daty))
+		{
+			if(preg_match("/^(\d{4})-(\d{2})-(\d{2}) ([01][0-9]|2[0-3]):([0-5][0-9]):([0-5][0-9])$/",$data))
+			{
+				return 1;
+			}
+		}
+		return 0;
+	}
+	public function valid_int($id)
+	{
+		$daty= trim($id);
 		if(!empty($id))
 		{
-			if(!preg_match('/^[0-9]{1,11}$/',$id))
-			{
-				$code = '202';
-				$message = 'data type incorrect';
-			}
+				if(preg_match('/^[0-9]{1,11}$/',$id))
+				{
+					return 1;
+				}
+			
 		}
-		else
-		{
-			 $code= '201';
-			 $message = 'have fied data null';
-		}
-		$result = array('code'=>$code, 'message'=>$message);
-		return $result;
+		return 0;
 	}
-	public function valid_modified($data)
-	{
-		$code ='200';
-		$message = '';
-		if(!empty($data['modified']))
-		{
-			if(!preg_match("/^(\d{4})-(\d{2})-(\d{2}) ([01][0-9]|2[0-3]):([0-5][0-9]):([0-5][0-9])$/",$data['modified']))
-			{
-				$code = '202';
-				$message = 'data type incorrect';
-			}
-		}
-		else
-		{
-			 $code= '201';
-			 $message = 'have fied data null';
-		}
-		$result = array('code'=>$code, 'message'=>$message);
-		return $result;
-	}
-	public function valid_name($data)
-	{
-		$tr= trim($data['name']);
-		$num = strlen($tr);
-		$code ='200';
-		$message = '';
-		echo $num;
-		if(0<$num && $num<21)
-		{
-			if(preg_match('/[!@#$%^&*()<>,.;:\|}{]/',$data['name']))
-			{
-				$code = '202';
-				$message = 'data type incorrect';
-			}
-		}
-		else
-		{
-			 $code= '201';
-			 $message = 'no data';
-		}
-		$result = array('code'=>$code, 'message'=>$message);
-		return $result;
-		
-	}
-	public function valid_title($data)
-	{
-		$tr= trim($data['title']);
-		$num = strlen($tr);
-		$code ='200';
-		$message = '';
-		echo $num;
-		if(0<$num && $num<21)
-		{
-			if(preg_match('/[!@#$%^&*()<>,.;:\|}{]/',$data['title']))
-			{
-				$code = '202';
-				$message = 'data type incorrect';
-			}
-		}
-		else
-		{
-			 $code= '201';
-			 $message = 'no data';
-		}
-		$result = array('code'=>$code, 'message'=>$message);
-		return $result;
-		
-	}
-	
-
 
 }
