@@ -88,7 +88,7 @@ class employee_model
 			'title' => $this->valid_string($data['title'], 1,15),
 			'modified' => $this->valid_date($data['modified'])
 			);
-			print_r($result);
+			//print_r($result);
 			foreach($result as $result1)
 			{
 				if(preg_match('/[0]/',$result1))
@@ -106,7 +106,7 @@ class employee_model
 			'title' => $this->valid_string($data['title'], 1,15),
 			'modified' => $this->valid_date($data['modified'])
 			);
-			print_r($result);
+			//print_r($result);
 			foreach($result as $result1)
 			{
 				if(preg_match('/[0]/',$result1))
