@@ -20,4 +20,4 @@ if($employee ->validation($data,$process) == 0)
 {
 	echo 'error data incorrect';
 }
-else echo 'access';
+else echo  $employee->update($data);
