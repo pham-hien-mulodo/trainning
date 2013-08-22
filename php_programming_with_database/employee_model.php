@@ -74,28 +74,33 @@ class employee_model
 ///////////VALIDATION///////////////
 	public function validation($data,$process)
 	{
-		if($process=='delete')
+		if($process =='delete')
 		{
-			$result = $this->valid_int($data['id']);
-			return $result;
+			$result = $this->valid_int($data['id'], 1,11);
+			if($result == 1)
+			{
+				return 1;
+			}
+			else
+			return 0;
 		}
+
 		if($process == 'update')
 		{
-			$result = array(
-			'id' => $this->valid_int($data['id']),
-			'name' => $this->valid_string($data['name'], 1,20),
-			'title' => $this->valid_string($data['title'], 1,15),
-			'modified' => $this->valid_date($data['modified'])
-			);
-			//print_r($result);
-			foreach($result as $result1)
-			{
-				if(preg_match('/[0]/',$result1))
+				$result = array(
+				'id' => $this->valid_int($data['id'], 1,11),
+				'name' => $this->valid_string($data['name'], 1,20),
+				'title' => $this->valid_string($data['title'], 1,15),
+				'modified' => $this->valid_date($data['modified'])
+				);
+				foreach($result as $result1)
 				{
-					return 0;
+					if($result1 == 0)
+					{
+						return 0;
+					}
 				}
-			}
-			return 1;
+				return 1;
 		}
 		if($process == 'insert')
 		{
@@ -105,10 +110,9 @@ class employee_model
 			'title' => $this->valid_string($data['title'], 1,15),
 			'modified' => $this->valid_date($data['modified'])
 			);
-			//print_r($result);
 			foreach($result as $result1)
 			{
-				if(preg_match('/[0]/',$result1))
+				if($result1 == 0)
 				{
 					return 0;
 				}
@@ -118,43 +122,50 @@ class employee_model
 	}
 	public function valid_string($data, $minlength, $maxleng)
 	{
+		$kq= 0;
 		$daty = trim($data);
 		if(!empty($daty))
 		{
 			if(strlen($data)>= $minlength && strlen($data)<=$maxleng)
 			{
-				if(!preg_match('/[!@#$%^&*()<>,.;:\|}{?]/',$data))
-				{ 	
-					return 1;
+				if(is_string($data))
+				{
+					$kq= 1;
 				}
 			}
 		}
-		return 0;
+		return $kq;
 	}
-	public function valid_date($data)
+	public function valid_date(&$data)
 	{
+		$kq=0;
 		$daty = trim($data);
 		if(!empty($daty))
 		{
 			if(preg_match("/^(\d{4})-(\d{2})-(\d{2}) ([01][0-9]|2[0-3]):([0-5][0-9]):([0-5][0-9])$/",$data))
 			{
-				return 1;
+				date_default_timezone_set('Asia/Bangkok');
+				$data = strtotime($data);
+				$dat1=date('Y-m-d H:i:s', $data);
+				$data = $dat1;
+				$kq=1;
+			} }
+		return $kq;
+	}
+	public function valid_int($data, $minlength, $maxleng)
+	{
+		$kq= 0;
+		$daty = trim($data);
+		if(!empty($daty))
+		{
+			if(strlen($data)>= $minlength && strlen($data)<=$maxleng)
+			{
+				if(is_int($data))
+				{
+					$kq= 1;
+				}
 			}
 		}
-		return 0;
+		return $kq;
 	}
-	public function valid_int($id)
-	{
-		$daty= trim($id);
-		if(!empty($id))
-		{
-				if(preg_match('/^[0-9]{1,11}$/',$id))
-				{
-					return 1;
-				}
-			
-		}
-		return 0;
-	}
-
 }
