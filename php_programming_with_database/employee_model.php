@@ -5,7 +5,7 @@ class employee_model
 
 //////////////DELETE///////////////
 
-	public function delete($id)
+	public function delete($data)
 	{
 		$hostname = "localhost";
 		$username = "root";
@@ -13,13 +13,12 @@ class employee_model
 		$database ="php_basics";
 		$dbcon = mysql_connect($hostname, $username, $password) or die ("ko ket noi den mysql");
 		$selected = mysql_select_db($database,$dbcon) or die("ko the lay php_basics");
-		$result = mysql_query("DELETE FROM employee WHERE id = $id");
+		$result = mysql_query("DELETE FROM employee WHERE id = '".$data['id']."'");
 		$count = mysql_affected_rows();
 		mysql_close($dbcon);
 		return $count;
 		
 	}// kiem tra id ton tai: check_id_exit()
-
 //////////////INSERT////////////////
 
 	public function insert($data)

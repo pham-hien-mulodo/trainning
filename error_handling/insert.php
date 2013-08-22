@@ -3,9 +3,8 @@
 require_once('employee_model.php');
 
 $data = array();
-
 $data['name'] = 'test ime';
-$data['title'] = 'admin';
+$data['title'] = 'use';
 $day = time();
 date_default_timezone_set('Asia/Bangkok');
 $data['created'] = date('Y-m-d H:i:s', $day);

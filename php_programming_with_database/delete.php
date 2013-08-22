@@ -1,7 +1,7 @@
 <?php
 require_once('employee_model.php');
 $data = array();
-$data['id'] = '2a01';
+$data['id'] = '51';
 
 $employee = new employee_model();
 $process ='delete';
