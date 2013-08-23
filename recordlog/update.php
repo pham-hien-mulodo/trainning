@@ -2,7 +2,7 @@
 require_once('employee_model.php');
 
 $data = array();
-$data['id'] = '46' ;
+$data['id'] = '46';
 $data['name'] = 'hien';
 $data['title'] = 'user';
 $day = time();
