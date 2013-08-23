@@ -174,7 +174,7 @@ class employee_model
 		
 		if($process=='delete')
 		{ 	
-			$result => $this->valid_int($data['id'], 1,11);
+			$result = $this->valid_int($data['id'], 1,11);
 			if($result == 1)
 			{
 				return 1;
@@ -218,7 +218,8 @@ class employee_model
 	}
 	public function valid_string($data, $minlength, $maxleng)
 	{
-		$kq= 0;
+		
+		try{
 		$daty = trim($data);
 		if(!empty($daty))
 		{
@@ -226,32 +227,42 @@ class employee_model
 			{
 				if(is_string($data))
 				{
-					$kq= 1;
-				}
-			}
+					return true;
+				}else { throw new Exception('data type string false'); return false;}
+			}else { throw new Exception('string length false'); return false;}
+		}else { throw new Exception('string empty'); return flase;}
+		} catch(Exception $e)
+		{
+			echo $e->getmessage();
 		}
-		return $kq;
+		return false;
 	}
-	public function valid_date(&$data)
+	public function valid_date($data)
 	{
-		$kq=0;
+		try{
 		$daty = trim($data);
 		if(!empty($daty))
 		{
-			if(preg_match("/^(\d{4})-(\d{2})-(\d{2}) ([01][0-9]|2[0-3]):([0-5][0-9]):([0-5][0-9])$/",$data))
+			if(preg_match("/^(\d{4})-(\d{2})-(\d{2}) ([01][0-9]|2[0-3]):([0-5][0-9]):([0-5][0-9])$/",$data,$matches))
 			{
-				date_default_timezone_set('Asia/Bangkok');
-				$data = strtotime($data);
-				$dat1=date('Y-m-d H:i:s', $data);
-				$data = $dat1;
-				$kq=1;
-			} }
-		return $kq;
+				if(checkdate($matches[2], $matches[3], $matches[1]))
+				{
+					return true;
+				}else { throw new Exception('date no exit'); return false;}
+			}else { throw new Exception('format date false'); return false;}
+		}else { throw new Exception('date empty'); return false;}
+		} catch(Exception $e)
+		{
+			echo $e->getmessage();
+		}
+		return false;
 	}
 	public function valid_int($data, $minlength, $maxleng)
 	{
 		$kq= 0;
 		$daty = trim($data);
+		try
+		{
 		if(!empty($daty))
 		{
 			if(strlen($data)>= $minlength && strlen($data)<=$maxleng)
@@ -260,7 +271,22 @@ class employee_model
 				{
 					$kq= 1;
 				}
+				else
+				{
+					throw new Exception('data no type int');
+				}
+			}else
+			{
+				throw new Exception('int length false');
 			}
+		}else
+		{
+			throw new Exception('int no data');
+		}
+		}
+		catch(Exception $e)
+		{
+			echo $e->getmessage();
 		}
 		return $kq;
 	}

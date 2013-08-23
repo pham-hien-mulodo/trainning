@@ -1,14 +1,16 @@
 <?php
 require_once('employee_model.php');
 $data = array();
-$data['id'] = 45;
+$data['id'] = 36;
 
 $employee = new employee_model();
 $process ='delete';
-//echo $employee -> validation_delete($id);
-//echo $result;
-if($employee ->validation($data,$process) == 0)
+$result = $employee ->validation($data,$process);
+if($result == 1)
 {
-	echo 'error data incorrect';
+	echo $employee->delete($data);
 }
-else echo $employee->delete($data);
+
+else echo 'error data incorrect';
+//$salary = 12345111678923;
+//echo $employee->valid_int($salary,1,11);

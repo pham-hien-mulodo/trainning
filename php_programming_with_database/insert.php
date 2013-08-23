@@ -1,9 +1,6 @@
 <?php
-
 require_once('employee_model.php');
-
 $data = array();
-
 $data['name'] = 'test ime';
 $data['title'] = 'admc2@in';
 $day = time();

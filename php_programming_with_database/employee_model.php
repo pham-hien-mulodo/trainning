@@ -23,7 +23,6 @@ class employee_model
 
 	public function insert($data)
 	{
-	$this->validation($data);
 		$hostname = "localhost";
 		$username = "root";
 		$password = "";
@@ -72,7 +71,7 @@ class employee_model
 		return $row;
 	}
 ///////////VALIDATION///////////////
-	public function validation($data,$process)
+	public function validation($data, $process)
 	{
 		if($process =='delete')
 		{
@@ -136,24 +135,25 @@ class employee_model
 		}
 		return $kq;
 	}
-	public function valid_date(&$data)
+	public function valid_date($data)
 	{
-		$kq=0;
 		$daty = trim($data);
 		if(!empty($daty))
 		{
-			if(preg_match("/^(\d{4})-(\d{2})-(\d{2}) ([01][0-9]|2[0-3]):([0-5][0-9]):([0-5][0-9])$/",$data))
+			if(preg_match("/^(\d{4})-(\d{2})-(\d{2}) ([01][0-9]|2[0-3]):([0-5][0-9]):([0-5][0-9])$/",$data,$matches))
 			{
-				date_default_timezone_set('Asia/Bangkok');
-				$data = strtotime($data);
-				$dat1=date('Y-m-d H:i:s', $data);
-				$data = $dat1;
-				$kq=1;
-			} }
-		return $kq;
+				if(checkdate($matches[2], $matches[3], $matches[1]))
+				{
+					return true;
+				}
+			}
+			return false;
+		}
+		return false;
 	}
 	public function valid_int($data, $minlength, $maxleng)
 	{
+		
 		$kq= 0;
 		$daty = trim($data);
 		if(!empty($daty))
