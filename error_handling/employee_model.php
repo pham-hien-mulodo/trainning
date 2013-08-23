@@ -5,7 +5,7 @@ class employee_model
 
 //////////////DELETE///////////////
 
-	public function delete($data)
+	public function delete_employee($data)
 	{
 		$count = 0;
 		$hostname = "localhost";
@@ -171,10 +171,9 @@ class employee_model
 ///////////VALIDATION///////////////
 	public function validation($data,$process)
 	{
-		
+		$result = $this->valid_int($data['id'], 1,11);
 		if($process=='delete')
 		{ 	
-			$result => $this->valid_int($data['id'], 1,11);
 			if($result == 1)
 			{
 				return 1;
@@ -242,7 +241,7 @@ class employee_model
 		$daty = trim($data);
 		if(!empty($daty))
 		{
-			if(preg_match("/^(\d{4})-(\d{2})-(\d{2}) ([01][0-9]|2[0-3]):([0-5][0-9]):([0-5][0-9])$/",$data))
+			if(preg_match("/^(\d{4})-(\d{2})-(\d{2}) ([01][0-9]|2[0-3]):([0-5][0-9]):([0-5][0-9])$/",$data,$matches))
 			{
 				if(checkdate($matches[2], $matches[3], $matches[1]))
 				{
@@ -284,7 +283,7 @@ class employee_model
 		{
 			echo $e->getmessage();
 		}
-		return return false;
+		return false;
 	}
 
 	public function data()
@@ -314,6 +313,63 @@ class employee_model
 			echo $e->getmessage();
 		}
 	}
-	
+	public function delete_salary($data)
+	{
+		$count = 0;
+		$hostname = "localhost";
+		$username = "root";
+		$password = "";
+		$database ="php_basics";
+		try
+		{
+			
+			$dbcon = mysql_connect($hostname, $username, $password) or die ("ko ket noi den mysql");
+			if($dbcon == false)
+			{	
+				throw new Exception('no connect');
+			}
+			$selected = mysql_select_db($database,$dbcon) or die("ko the lay php_basics");
+			if($selected == false)
+			{
+				throw new Exception('no name data');
+			}
+			$result = mysql_query("select count(id) as id from employee where id = '".$data['id']."'");
+			$test = mysql_fetch_assoc($result);
+			if($test['id'] != 1)
+			{
+				throw new Exception('id no exit');
+			}
+			$result = mysql_query("DELETE FROM employee WHERE id = '".$data['id']."'");
+			$count = mysql_affected_rows();
+			echo $count;
+			if($count < 1 )
+			{
+				throw new Exception('delete employee no access');
+			}
+			
+						echo ' ';
+			
+			$result = mysql_query("DELETE FROM salary WHERE employee_code = '".$data['id']."'");
+			if(!isset($result))
+			{
+				throw new Exception('delete salary no access');
+			}
+			$count = mysql_affected_rows();
+			echo ' ';
+			echo $count;
+			mysql_close($dbcon);
+		}
+		catch(Exception $e)
+		{
+			echo $e->getmessage();
+		}
+		//return $count;
+	}
 
 }
+
+
+
+
+
+

@@ -2,8 +2,8 @@
 require_once('employee_model.php');
 
 $data = array();
-$data['id'] = 46 ;
-$data['name'] = 'hientestasdfghjklasdfghjkl891';
+$data['id'] = '46' ;
+$data['name'] = 'hien';
 $data['title'] = 'user';
 $day = time();
 date_default_timezone_set('Asia/Bangkok');

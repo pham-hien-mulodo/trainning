@@ -243,7 +243,7 @@ class employee_model
 		{
 			throw new Exception('int no data');
 		}
-		return return false;
+		return false;
 	}
 
 	public function data()
