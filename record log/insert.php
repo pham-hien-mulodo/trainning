@@ -9,8 +9,13 @@ $data['created'] = date('Y-m-d H:i:s', $day);
 $data['modified'] = date('Y-m-d H:i:s', $day);
 $process ='insert';
 $employee = new employee_model();
-if($employee ->validation($data,$process) == 1)
+try{
+$employee ->validation($data,$process);
+ echo $employee->insert($data);
+} catch(Exception $e)
 {
-	echo $employee->insert($data);
+	$error = error_log(date('m/d/Y H:i:s').' '.$e->getmessage().':');
+	echo $error;
+	print_r($e->getTrace());
+	echo 'Error happened in the process. Please try again.';
 }
-else echo 'error data incorrect';

@@ -11,8 +11,14 @@ $data['modified'] = date('Y-m-d H:i:s', $day);
 $employee = new employee_model();
 $process = 'update';
 //$data['modified'] = '2013-02-29 09:08:07';
-if($employee ->validation($data,$process) == 1)
+
+try{
+$employee ->validation($data,$process);
+ echo $employee->update($data);
+} catch(Exception $e)
 {
-	echo $employee->update($data);
+	$error = error_log(date('m/d/Y H:i:s').' '.$e->getmessage().':');
+	echo $error;
+	print_r($e->getTrace());
+	echo 'Error happened in the process. Please try again.';
 }
-else echo 'error data incorrect';
