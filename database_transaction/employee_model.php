@@ -355,7 +355,6 @@ class employee_model
 			$test = mysql_fetch_assoc($result);
 			if($test['id'] != 1)
 			{
-				echo 'error 1';
 				throw new Exception('id no exit');
 			}
 			$result = mysql_query("DELETE FROM employee WHERE id = '".$data['id']."'");
@@ -363,20 +362,17 @@ class employee_model
 			echo $count;
 			if($count < 1 )
 			{
-				//echo 'error';
 				throw new Exception('delete employee no access');
 			}
-			echo ' ';
 			$result = mysql_query("DELETE FROM salary WHERE employee_code = '".$data['id']."'");
 			$count = mysql_affected_rows();
-			echo ' ';
 			echo $count;
+			echo ' ';
 			if($count<1)
 			{
 				throw new Exception('delete salary no access');
 			}
-			
-			mysql_close($dbcon);
+			mysql_query('commit');
 		} catch(Exception $e)
 		{
 			mysql_query('rollback, set autocommit = 1');
@@ -385,6 +381,7 @@ class employee_model
 			print_r($e->getTrace());
 			echo 'Error happened in the process. Please try again.';
 		}
+		mysql_close($dbcon);
 		//return $count;
 	}
 	public function insert_salary($data)
@@ -429,7 +426,7 @@ class employee_model
 			mysql_query('commit');
 		} catch(Exception $e)
 		{
-			mysql_query('rollback', 'set autocommit = 1');
+			mysql_query('rollback');
 			$error = error_log(date('m/d/Y H:i:s').' '.$e->getmessage().':');
 			echo $error;
 			print_r($e->getTrace());
@@ -478,7 +475,7 @@ class employee_model
 				throw new Exception('update employee no access');
 			}
 			
-			$sql2 = "update salary set employee_code='".$data['employee_code']."',year='".$data['year']."',month='".$data['month']."',payment='".$data['payment']."', created='".$data['created']."', modified='".$data['modified']."' where employee_code = employee.id";
+			$sql2 = "update salary set employee_code='".$data['employee_code']."',year='".$data['year']."',month='".$data['month']."',payment='".$data['payment']."', created='".$data['created']."', modified='".$data['modified']."' where employee_code = '".$data['id']."'";// id= '".$data['id']."'
 			$result2 = mysql_query($sql2);
 			$count2 = mysql_affected_rows();
 			echo $count2;
@@ -489,7 +486,7 @@ class employee_model
 			mysql_query('commit');
 		} catch(Exception $e)
 		{
-			mysql_query('rollback', 'set autocommit = 1');
+			mysql_query('rollback');
 			$error = error_log(date('m/d/Y H:i:s').' '.$e->getmessage().':');
 			echo $error;
 			print_r($e->getTrace());
