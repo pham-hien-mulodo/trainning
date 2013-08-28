@@ -375,7 +375,7 @@ class employee_model
 			mysql_query('commit');
 		} catch(Exception $e)
 		{
-			mysql_query('rollback, set autocommit = 1');
+			mysql_query('rollback');
 			$error = error_log(date('m/d/Y H:i:s').' '.$e->getmessage().':');
 			echo $error;
 			print_r($e->getTrace());
