@@ -78,12 +78,12 @@ class employee_model
 		$username = "root";
 		$password = "";
 		$database = "php_basics";
-			$dbcon = mysql_connect($hostname, $username, $password) or die ("ko ket noi den mysql");
+			$dbcon = mysql_connect($hostname, $username, $password);
 			if($dbcon == false)
 			{	
 				throw new Exception('no connect');
 			}
-			$selected = mysql_select_db($database,$dbcon) or die("ko the lay php_basics");
+			$selected = mysql_select_db($database,$dbcon);
 			if($selected == false)
 			{
 				throw new Exception('no name data');

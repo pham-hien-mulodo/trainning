@@ -1,10 +1,10 @@
 <?php
 abstract class aModel
 {
-	private $host = 'hostname';
-	private $user = 'username';
-	private $password = 'password';
-	private $dbname = 'database';
+	private $host = 'localhost';
+	private $user = 'root';
+	private $password = '';
+	private $dbname = 'php_basics';
 	
 	protected function dbConnect()
 	{
@@ -15,7 +15,7 @@ abstract class aModel
 			{
 				throw new Exception('no connect');
 			}
-			$selected = mysql_select_db($this->_dbname, $dbcon);
+			$selected = mysql_select_db($this->dbname, $dbcon);
 			if($selected ==false)
 			{
 				throw new Exception('no name data');
@@ -38,22 +38,33 @@ abstract class aModel
 	{
 		mysql_close();
 	}
-	abstract protected function checkIdExit($id)
+	public function checkIdExit($data, $colum)
 	{
+		try{
+		$this->dbConnect();
+		$result = mysql_query("select count(id) as id from $colum where id = $data");
+		$test = mysql_fetch_assoc($result);
+		if($test['id'] != 1)
+		{
+			throw new Exception('id no exit');
+			return false;
+		}else return true;
+		} catch(Exception $e)
+		{
+			date_default_timezone_set('Asia/Bangkok');
+			mysql_query('rollback');
+			$error = error_log(date('m/d/Y H:i:s').' '.$e->getmessage().':');
+			echo $error;
+			print_r($e->getTrace());
+			echo 'Error happened in the process. Please try again.';
+		}
+		$this->dbClose();
 	}
-	abstract public function insert($data)
-	{
-	}
-	abstract public function update($data)
-	{
-	}
-	abstract public function delete($id)
-	{
-	}
-	abstract public function selectById($id)
-	{
-	}
-	protected function valid_string($data, $minlength, $maxleng)
+	abstract public function insert($data,$colum,$colums);
+	abstract public function update($data,$colum,$colums);
+	abstract public function delete($data,$colum,$colums);
+	abstract public function selectById($id,$colum,$colums);
+	public function valid_string($data, $minlength, $maxleng)
 	{
 		try{
 		$daty = trim($data);
@@ -76,7 +87,7 @@ abstract class aModel
 		}
 		return false;
 	}
-	protected function valid_date(&$data)
+	public function valid_date(&$data)
 	{
 		try{
 		$daty = trim($data);
@@ -96,7 +107,7 @@ abstract class aModel
 		}
 		return false;
 	}
-	protected function valid_int($data, $minlength, $maxleng)
+	public function valid_int($data, $minlength, $maxleng)
 	{
 		try{
 		$daty=trim($data);

@@ -1,10 +1,8 @@
 <?php
-
-abstract class Salary extends AbstractModel
+require_once('abstractModel.php');
+class SalaryModel extends aModel
 {
-	public function delete_salary($data)
-	{
-		protected function calldbConnect()
+	protected function calldbConnect()
 	{
 		return $this->dbConnect();
 	}
@@ -12,39 +10,19 @@ abstract class Salary extends AbstractModel
 	{
 		return $this->dbClose();
 	}
-	protected function checkIdExit($id)
-	{
-		try{
-		$this->dbConnect();
-		$result = mysql_query("select count(id) as id from salary where id = $id");
-		//print_r($result);
-		$test = mysql_fetch_assoc($result);
-		if($test['id'] != 1)
-		{
-			throw new Exception('id no exit');
-		}else return true;
-		} catch(Exception $e)
-		{
-			date_default_timezone_set('Asia/Bangkok');
-			mysql_query('rollback');
-			$error = error_log(date('m/d/Y H:i:s').' '.$e->getmessage().':');
-			echo $error;
-			print_r($e->getTrace());
-			echo 'Error happened in the process. Please try again.';
-		}
-		$this->dbClose();
-	}
-	public function delete_salary($data)
+	
+///////////////// DELETE //////////////////
+	public function delete($data,$colum,$colums)
 	{
 		$count = 0;
 		try
 		{
 			$this->calldbConnect();
-			$this->checkIdExit();
+			$this->checkIdExit($data, $colum);
 			mysql_query('set autocommit = 0');
 			mysql_query('begin');
 			
-			$result = mysql_query("DELETE FROM salary WHERE id = '".$data['id']."'");
+			$result = mysql_query("DELETE FROM $colum WHERE id = '".$data['id']."'");
 			$sa = mysql_affected_rows();
 			if($sa < 1)
 			{
@@ -63,7 +41,8 @@ abstract class Salary extends AbstractModel
 		$this->calldbClose();
 		return $count;
 	}
-	public function insert_salary($data)
+////////////  INSERT  /////////////////////
+	public function insert($data,$colum,$colums)
 	{
 		$count = 0;
 		try
@@ -71,8 +50,8 @@ abstract class Salary extends AbstractModel
 			$this->calldbConnect();
 			mysql_query('set autocommit = 0');
 			mysql_query('begin');
-			$this->checkIdExit($data['employee_code']);
-			$sql = "INSERT INTO salary (employee_code, year, month, payment, created, modified) VALUES ('".$data['employee_code']."','".$data['year']."','".$data['month']."','".$data['payment']."', '".$data['created']."', '".$data['modified']."')";
+			$this->checkIdExit($data['employee_code'], $colums);
+			$sql = "INSERT INTO $colum (employee_code, year, month, payment, created, modified) VALUES ('".$data['employee_code']."','".$data['year']."','".$data['month']."','".$data['payment']."', '".$data['created']."', '".$data['modified']."')";
 			$result = mysql_query($sql);
 			$count = mysql_insert_id();
 		//	echo $count;
@@ -89,13 +68,13 @@ abstract class Salary extends AbstractModel
 			print_r($e->getTrace());
 			echo 'Error happened in the process. Please try again.';
 		}
-		$this->calldbClose()
+		$this->calldbClose();
 		return $count;
 	}
 
 /////////////UPDATE/////////////////
 
-	public function update_salary($data)
+	public function update($data,$colum,$colums)
 	{
 		$count = 0;
 		try
@@ -103,9 +82,9 @@ abstract class Salary extends AbstractModel
 			$this->calldbConnect();
 			mysql_query('set autocommit = 0');
 			mysql_query('begin');
-			$this->checkIdExit($data['id']);
-			$this->checkIdExit($data['employee_code']);
-			$sql = "update salary set employee_code='".$data['employee_code']."',year='".$data['year']."',month='".$data['month']."',payment='".$data['payment']."', created='".$data['created']."', modified='".$data['modified']."' where id = '".$data['id']."'";
+			$this->checkIdExit($data['id'], $colum);
+			$this->checkIdExit($data['employee_code'],$colums);
+			$sql = "update $colum set employee_code='".$data['employee_code']."',year='".$data['year']."',month='".$data['month']."',payment='".$data['payment']."', created='".$data['created']."', modified='".$data['modified']."' where id = '".$data['id']."'";
 			$result = mysql_query($sql);
 			$count = mysql_affected_rows();
 			if($count < 1)
@@ -121,14 +100,38 @@ abstract class Salary extends AbstractModel
 			print_r($e->getTrace());
 			echo 'Error happened in the process. Please try again.';
 		}
-		$this->calldbClose()
+		$this->calldbClose();
 		return $count;
+	}
+/////////////  SELECT ////////////////////////
+	public function selectById($data,$colum,$colums)
+	{
+		$row = 0;
+		try
+		{
+			$this->calldbConnect();
+			$this->checkIdExit($data['id'],$colum);
+			$result = mysql_query("SELECT * FROM $colum WHERE id='".$data['id']."'");
+			if(!isset($result))
+			{
+				throw new Exception('select by id no access');
+			}
+			$row = mysql_fetch_array($result, MYSQL_ASSOC);
+			$this->calldbClose();
+		} catch(Exception $e)
+		{
+			$error = error_log(date('m/d/Y H:i:s').' '.$e->getmessage().':');
+			echo $error;
+			print_r($e->getTrace());
+			echo 'Error happened in the process. Please try again.';
+		}
+		return $row;
 	}
 ////////////// VALIDATION //////////////
 
-protected function validation($data,$process)
+	public function validation($data,$process)
 	{
-		if($process=='delete')
+		if($process=='delete' || $process == 'selectById')
 		{
 			$result = $this->valid_int($data['id'], 1,11);
 			if($result == 1)
@@ -159,7 +162,6 @@ protected function validation($data,$process)
 		if($process == 'insert')
 		{
 			$result = array(
-				'id' => $this->valid_int($data['id'], 1,11),
 				'employee_code' => $this->valid_int($data['employee_code'], 1,11),
 				'payment' => $this->valid_int($data['payment'], 1,11),
 				'year' => $this->valid_int($data['year'], 1,11),

@@ -121,7 +121,7 @@ class employee_model
 			$result = mysql_query($sql);
 			if(!isset($result))
 			{
-				throw new Exception('insert no access');
+				throw new Exception('update no access');
 			}
 			$count = mysql_affected_rows();
 			mysql_close($dbcon);

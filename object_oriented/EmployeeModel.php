@@ -1,6 +1,6 @@
 <?php
-
-abstract class EmployeeModel extends AbstractModel
+require_once('abstractModel.php');
+class EmployeeModel extends aModel
 {
 	protected function calldbConnect()
 	{
@@ -10,44 +10,21 @@ abstract class EmployeeModel extends AbstractModel
 	{
 		return $this->dbClose();
 	}
-	protected function checkIdExit($id)
-	{
-		try{
-		$this->dbConnect();
-		$result = mysql_query("select count(id) as id from employee where id = $id");
-		//print_r($result);
-		$test = mysql_fetch_assoc($result);
-		if($test['id'] != 1)
-		{
-			throw new Exception('id no exit');
-		}else return true;
-		} catch(Exception $e)
-		{
-			date_default_timezone_set('Asia/Bangkok');
-			mysql_query('rollback');
-			$error = error_log(date('m/d/Y H:i:s').' '.$e->getmessage().':');
-			echo $error;
-			print_r($e->getTrace());
-			echo 'Error happened in the process. Please try again.';
-		}
-		$this->dbClose();
-	}
+
 //////////////DELETE///////////////
 
-	public function delete_employee($data)
+	public function delete($data,$colum,$colums)
 	{
-		
 		$count = 0;
-		
 		try
 		{
 			$this->calldbConnect();
 			mysql_query('set autocommit = 0');
 			mysql_query('begin');
-			$this->checkIdExit($data['id']);
+			$this->checkIdExit($data);
 			$result = mysql_query("DELETE FROM salary WHERE employee_code = '".$data['id']."'");
 			$count = mysql_affected_rows();
-			if($count<1)
+			if(!isset($result))
 			{
 				throw new Exception('delete salary no access');
 			}
@@ -66,18 +43,20 @@ abstract class EmployeeModel extends AbstractModel
 			print_r($e->getTrace());
 			echo 'Error happened in the process. Please try again.';
 		}
-		mysql_close($dbcon);
+		$this->calldbClose();
 		return $count;
 	}// kiem tra id ton tai: check_id_exit()
 
 //////////////INSERT////////////////
 
-	public function insert($data)
+	public function insert($data,$colum,$colums)
 	{
 		$count = 0;
 		try
 		{
 			$this->calldbConnect();
+			mysql_query('set autocommit = 0');
+			mysql_query('begin');
 			$sql = "INSERT INTO employee (name , title, created, modified) VALUES ('".$data['name']."','".$data['title']."' , '".$data['created']."', '".$data['modified']."')";
 			$result = mysql_query($sql);
 			if(!isset($result))
@@ -85,26 +64,30 @@ abstract class EmployeeModel extends AbstractModel
 				throw new Exception('insert no access');
 			}
 			$count = mysql_insert_id();
-			$this->calldbClose();
+			//echo $count;
+			mysql_query('commit');
+			
 		} catch(Exception $e)
 		{
+			mysql_query('rollback');
 			$error = error_log(date('m/d/Y H:i:s').' '.$e->getmessage().':');
 			echo $error;
 			print_r($e->getTrace());
 			echo 'Error happened in the process. Please try again.';
 		}
+		$this->calldbClose();
 		return $count;
 	}
 
 /////////////UPDATE/////////////////
 
-	public function update($data)
+	public function update($data,$colum,$colums)
 	{
 		$count = 0;
 		try
 		{
 			$this->calldbConnect();
-			$this->checkIdExit();
+			$this->checkIdExit($data,$colums);
 			$sql = "update employee set name = '".$data['name']."', title = '".$data['title']."' , modified = '".$data['modified']."' where id = '".$data['id']."'";
 			$result = mysql_query($sql);
 			if(!isset($result))
@@ -112,7 +95,7 @@ abstract class EmployeeModel extends AbstractModel
 				throw new Exception('update no access');
 			}
 			$count = mysql_affected_rows();
-			$this->calldbClose();
+			mysql_query('commit');
 		} catch(Exception $e)
 		{
 			$error = error_log(date('m/d/Y H:i:s').' '.$e->getmessage().':');
@@ -120,12 +103,13 @@ abstract class EmployeeModel extends AbstractModel
 			print_r($e->getTrace());
 			echo 'Error happened in the process. Please try again.';
 		}
+		$this->calldbClose();
 		return $count;
 	}
 
 /////////////SELECT_BY_ID////////////
 
-	public function select_by_id($data)
+	public function selectById($data,$colum,$colums)
 	{
 		$row = 0;
 		try
@@ -149,9 +133,9 @@ abstract class EmployeeModel extends AbstractModel
 		return $row;
 	}
 ///////////// VALIDATION  ////////////////
-	protected function validation($data,$process)
+	public function validation($data,$process)
 	{
-		if($process=='delete')
+		if($process=='delete' || $process == 'selectById')
 		{
 			$result = $this->valid_int($data['id'], 1,11);
 			if($result == 1)
@@ -197,7 +181,6 @@ abstract class EmployeeModel extends AbstractModel
 	}
 	
 }
-
 
 
 
