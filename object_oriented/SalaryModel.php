@@ -1,7 +1,7 @@
 <?php
 require_once('interface.php');
 require_once('abstractModel.php');
-class EmployeeModel extends aModel
+class SalaryModel extends aModel
 {
 	protected function calldbConnect()
 	{
@@ -11,31 +11,26 @@ class EmployeeModel extends aModel
 	{
 		return $this->dbClose();
 	}
-
-//////////////DELETE///////////////
-
+	
+///////////////// DELETE //////////////////
 	public function delete($data,$colum,$colums)
 	{
 		$count = 0;
 		try
 		{
 			$this->calldbConnect();
+			$this->checkIdExit($data, $colum);
 			mysql_query('set autocommit = 0');
 			mysql_query('begin');
-			$this->checkIdExit($data);
-			$result = mysql_query("DELETE FROM salary WHERE employee_code = '".$data['id']."'");
-			$count = mysql_affected_rows();
-			if(!isset($result))
+			
+			$result = mysql_query("DELETE FROM $colum WHERE id = '".$data['id']."'");
+			$sa = mysql_affected_rows();
+			if($sa < 1)
 			{
 				throw new Exception('delete salary no access');
 			}
-			$result = mysql_query("DELETE FROM employee WHERE id = '".$data['id']."'");
-			$count = mysql_affected_rows();
-			if($count < 1 )
-			{
-				throw new Exception('delete employee no access');
-			}
 			mysql_query('commit');
+			$count = $sa;
 		} catch(Exception $e)
 		{
 			mysql_query('rollback');
@@ -46,10 +41,8 @@ class EmployeeModel extends aModel
 		}
 		$this->calldbClose();
 		return $count;
-	}// kiem tra id ton tai: check_id_exit()
-
-//////////////INSERT////////////////
-
+	}
+////////////  INSERT  /////////////////////
 	public function insert($data,$colum,$colums)
 	{
 		$count = 0;
@@ -58,16 +51,16 @@ class EmployeeModel extends aModel
 			$this->calldbConnect();
 			mysql_query('set autocommit = 0');
 			mysql_query('begin');
-			$sql = "INSERT INTO employee (name , title, created, modified) VALUES ('".$data['name']."','".$data['title']."' , '".$data['created']."', '".$data['modified']."')";
+			$this->checkIdExit($data['employee_code'], $colums);
+			$sql = "INSERT INTO $colum (employee_code, year, month, payment, created, modified) VALUES ('".$data['employee_code']."','".$data['year']."','".$data['month']."','".$data['payment']."', '".$data['created']."', '".$data['modified']."')";
 			$result = mysql_query($sql);
-			if(!isset($result))
-			{
-				throw new Exception('insert no access');
-			}
 			$count = mysql_insert_id();
-			//echo $count;
+		//	echo $count;
+			if($count <1)
+			{
+				throw new Exception('insert salary no access');
+			}
 			mysql_query('commit');
-			
 		} catch(Exception $e)
 		{
 			mysql_query('rollback');
@@ -88,17 +81,21 @@ class EmployeeModel extends aModel
 		try
 		{
 			$this->calldbConnect();
-			$this->checkIdExit($data,$colums);
-			$sql = "update employee set name = '".$data['name']."', title = '".$data['title']."' , modified = '".$data['modified']."' where id = '".$data['id']."'";
+			mysql_query('set autocommit = 0');
+			mysql_query('begin');
+			$this->checkIdExit($data['id'], $colum);
+			$this->checkIdExit($data['employee_code'],$colums);
+			$sql = "update $colum set employee_code='".$data['employee_code']."',year='".$data['year']."',month='".$data['month']."',payment='".$data['payment']."', created='".$data['created']."', modified='".$data['modified']."' where id = '".$data['id']."'";
 			$result = mysql_query($sql);
-			if(!isset($result))
-			{
-				throw new Exception('update no access');
-			}
 			$count = mysql_affected_rows();
+			if($count < 1)
+			{
+				throw new Exception('update salary no access');
+			}
 			mysql_query('commit');
 		} catch(Exception $e)
 		{
+			mysql_query('rollback');
 			$error = error_log(date('m/d/Y H:i:s').' '.$e->getmessage().':');
 			echo $error;
 			print_r($e->getTrace());
@@ -107,17 +104,15 @@ class EmployeeModel extends aModel
 		$this->calldbClose();
 		return $count;
 	}
-
-/////////////SELECT_BY_ID////////////
-
+/////////////  SELECT ////////////////////////
 	public function selectById($data,$colum,$colums)
 	{
 		$row = 0;
 		try
 		{
 			$this->calldbConnect();
-			$this->checkIdExit();
-			$result = mysql_query("SELECT * FROM employee WHERE id='".$data['id']."'");
+			$this->checkIdExit($data['id'],$colum);
+			$result = mysql_query("SELECT * FROM $colum WHERE id='".$data['id']."'");
 			if(!isset($result))
 			{
 				throw new Exception('select by id no access');
@@ -133,8 +128,8 @@ class EmployeeModel extends aModel
 		}
 		return $row;
 	}
-	/*
-///////////// VALIDATION  ////////////////
+////////////// VALIDATION //////////////
+/*
 	public function validation($data,$process)
 	{
 		if($process=='delete' || $process == 'selectById')
@@ -150,8 +145,10 @@ class EmployeeModel extends aModel
 		{
 				$result = array(
 				'id' => $this->valid_int($data['id'], 1,11),
-				'name' => $this->valid_string($data['name'], 1,20),
-				'title' => $this->valid_string($data['title'], 1,15),
+				'employee_code' => $this->valid_int($data['employee_code'], 1,11),
+				'payment' => $this->valid_int($data['payment'], 1,11),
+				'year' => $this->valid_int($data['year'], 1,11),
+				'month' => $this->valid_int($data['month'], 1,11),
 				'modified' => $this->valid_date($data['modified'])
 				);
 				foreach($result as $result1)
@@ -166,10 +163,12 @@ class EmployeeModel extends aModel
 		if($process == 'insert')
 		{
 			$result = array(
-			'created' => $this->valid_date($data['created']),
-			'name' => $this->valid_string($data['name'], 1,20),
-			'title' => $this->valid_string($data['title'], 1,15),
-			'modified' => $this->valid_date($data['modified'])
+				'employee_code' => $this->valid_int($data['employee_code'], 1,11),
+				'payment' => $this->valid_int($data['payment'], 1,11),
+				'year' => $this->valid_int($data['year'], 1,11),
+				'month' => $this->valid_int($data['month'], 1,11),
+				'modified' => $this->valid_date($data['modified']),
+				'created' => $this->valid_date($data['created'])
 			);
 			foreach($result as $result1)
 			{
@@ -183,6 +182,13 @@ class EmployeeModel extends aModel
 	}
 	*/
 }
+
+
+
+
+
+
+
 
 
 

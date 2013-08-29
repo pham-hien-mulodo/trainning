@@ -1,5 +1,5 @@
 <?php
-require_once('salary.php');
+require_once('SalaryModel.php');
 require_once('EmployeeModel.php');
 $data= array();
 $data['id'] = 100;

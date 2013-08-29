@@ -1,8 +1,7 @@
-<?php 
-class Interface
+<?php
+require_once('Employee.php');
+require_once('Salary.php');
+interface iEntity
 {
-	public function connect()
-	{
-		
-	}
+	public function validate();
 }

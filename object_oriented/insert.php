@@ -1,6 +1,6 @@
 <?php
 require_once('EmployeeModel.php');
-require_once('salary.php');
+require_once('SalaryModel.php');
 $data = array();
 /*$data['hostname'] = 'localhost';
 $data['username'] = 'root';
@@ -21,8 +21,8 @@ $process ='insert';
 $colum = 'salary';
 $colums = 'employee';
 $salary = new SalaryModel();
-$salary->validation($data, $process);
-echo $salary->insert($data, $colum, $colums);
+//$salary->validation($data, $process);
+echo $salary->insert(iEntity $data, $colum, $colums);
 /*
 $employee = new EmployeeModel();
 $employee->validation($data,$process);

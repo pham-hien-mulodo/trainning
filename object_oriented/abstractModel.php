@@ -1,4 +1,5 @@
 <?php
+require_once('interface.php');
 abstract class aModel
 {
 	private $host = 'localhost';
@@ -63,7 +64,7 @@ abstract class aModel
 	abstract public function insert($data,$colum,$colums);
 	abstract public function update($data,$colum,$colums);
 	abstract public function delete($data,$colum,$colums);
-	abstract public function selectById($id,$colum,$colums);
+	abstract public function selectById($data,$colum,$colums);
 	public function valid_string($data, $minlength, $maxleng)
 	{
 		try{
