@@ -151,55 +151,7 @@ class EmployeeModel extends aModel
 		}
 		return $row;
 	}
-	/*
-///////////// VALIDATION  ////////////////
-	public function validation($data,$process)
-	{
-		if($process=='delete' || $process == 'selectById')
-		{
-			$result = $this->valid_int($data['id'], 1,11);
-			if($result == 1)
-			{
-				return 1;
-				}
-			else return 0;
-		}
-		if($process == 'update')
-		{
-				$result = array(
-				'id' => $this->valid_int($data['id'], 1,11),
-				'name' => $this->valid_string($data['name'], 1,20),
-				'title' => $this->valid_string($data['title'], 1,15),
-				'modified' => $this->valid_date($data['modified'])
-				);
-				foreach($result as $result1)
-				{
-					if($result1 == 0)
-					{
-						return 0;
-					}
-				}
-				return 1;
-		}
-		if($process == 'insert')
-		{
-			$result = array(
-			'created' => $this->valid_date($data['created']),
-			'name' => $this->valid_string($data['name'], 1,20),
-			'title' => $this->valid_string($data['title'], 1,15),
-			'modified' => $this->valid_date($data['modified'])
-			);
-			foreach($result as $result1)
-			{
-				if($result1 == 0)
-				{
-					return 0;
-				}
-			}
-			return 1;
-		}
-	}
-	*/
+
 }
 
 
