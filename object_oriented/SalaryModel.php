@@ -1,8 +1,12 @@
 <?php
 require_once('interface.php');
+require_once('Salary.php');
 require_once('abstractModel.php');
 class SalaryModel extends aModel
 {
+	public function __construct(){
+
+	}
 	protected function calldbConnect()
 	{
 		return $this->dbConnect();
@@ -11,10 +15,16 @@ class SalaryModel extends aModel
 	{
 		return $this->dbClose();
 	}
+	protected function checkIdExit($data,$colum)
+	{
+		return $this->checkId($data,$colum);
+	}
 	
 ///////////////// DELETE //////////////////
-	public function delete($data,$colum,$colums)
+	public function delete($data)
 	{
+		$colum = $data['colum'];
+		$colums = $data['colums'];
 		$count = 0;
 		try
 		{
@@ -43,11 +53,19 @@ class SalaryModel extends aModel
 		return $count;
 	}
 ////////////  INSERT  /////////////////////
-	public function insert($data,$colum,$colums)
+	public function insert($data)
 	{
+		$colum = $data['colum'];
+		$colums = $data['colums'];
+		$sa = new Salary($data);
 		$count = 0;
 		try
 		{
+			$result = $sa->validate($data);
+			if($result==0)
+			{
+				throw new Exception('valid ko dung dinh dang');
+			}
 			$this->calldbConnect();
 			mysql_query('set autocommit = 0');
 			mysql_query('begin');
@@ -75,11 +93,19 @@ class SalaryModel extends aModel
 
 /////////////UPDATE/////////////////
 
-	public function update($data,$colum,$colums)
+	public function update($data)
 	{
+		$colum = $data['colum'];
+		$colums = $data['colums'];
+		$sa = new Salary($data);
 		$count = 0;
 		try
 		{
+			$result = $sa->validate($data);
+			if($result==0)
+			{
+				throw new Exception('valid ko dung dinh dang');
+			}
 			$this->calldbConnect();
 			mysql_query('set autocommit = 0');
 			mysql_query('begin');
@@ -105,8 +131,10 @@ class SalaryModel extends aModel
 		return $count;
 	}
 /////////////  SELECT ////////////////////////
-	public function selectById($data,$colum,$colums)
+	public function selectById($data)
 	{
+		$colum = $data['colum'];
+		$colums = $data['colums'];
 		$row = 0;
 		try
 		{
@@ -128,6 +156,7 @@ class SalaryModel extends aModel
 		}
 		return $row;
 	}
+}
 ////////////// VALIDATION //////////////
 /*
 	public function validation($data,$process)
@@ -181,7 +210,7 @@ class SalaryModel extends aModel
 		}
 	}
 	*/
-}
+
 
 
 

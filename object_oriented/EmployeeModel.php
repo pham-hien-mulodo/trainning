@@ -1,5 +1,5 @@
 <?php
-require_once('interface.php');
+require_once('Employee.php');
 require_once('abstractModel.php');
 class EmployeeModel extends aModel
 {
@@ -11,25 +11,35 @@ class EmployeeModel extends aModel
 	{
 		return $this->dbClose();
 	}
+	protected function checkIdExit($data,$colum)
+	{
+		return $this->checkId($data,$colum);
+	}
 
 //////////////DELETE///////////////
 
-	public function delete($data,$colum,$colums)
+	public function delete($data)
 	{
+		$colum = $data['colum'];
+		$colums = $data['colums'];
 		$count = 0;
 		try
 		{
 			$this->calldbConnect();
 			mysql_query('set autocommit = 0');
 			mysql_query('begin');
-			$this->checkIdExit($data);
-			$result = mysql_query("DELETE FROM salary WHERE employee_code = '".$data['id']."'");
+			$check = $this->checkIdExit($data['id'],$colums);
+			if($check == 0)
+			{
+				throw new Exception('id no exit');
+			}
+			$result = mysql_query("DELETE FROM $colum WHERE employee_code = '".$data['id']."'");
 			$count = mysql_affected_rows();
 			if(!isset($result))
 			{
 				throw new Exception('delete salary no access');
 			}
-			$result = mysql_query("DELETE FROM employee WHERE id = '".$data['id']."'");
+			$result = mysql_query("DELETE FROM $colums WHERE id = '".$data['id']."'");
 			$count = mysql_affected_rows();
 			if($count < 1 )
 			{
@@ -50,8 +60,10 @@ class EmployeeModel extends aModel
 
 //////////////INSERT////////////////
 
-	public function insert($data,$colum,$colums)
+	public function insert($data)
 	{
+		$colum = $data['colum'];
+		$colums = $data['colums'];
 		$count = 0;
 		try
 		{
@@ -82,11 +94,16 @@ class EmployeeModel extends aModel
 
 /////////////UPDATE/////////////////
 
-	public function update($data,$colum,$colums)
+	public function update( $data)
 	{
+		
 		$count = 0;
 		try
 		{
+			if(!$data->validate())
+			{
+				throw new Exception('valid ko dung dinh dang');
+			}
 			$this->calldbConnect();
 			$this->checkIdExit($data,$colums);
 			$sql = "update employee set name = '".$data['name']."', title = '".$data['title']."' , modified = '".$data['modified']."' where id = '".$data['id']."'";
@@ -101,7 +118,6 @@ class EmployeeModel extends aModel
 		{
 			$error = error_log(date('m/d/Y H:i:s').' '.$e->getmessage().':');
 			echo $error;
-			print_r($e->getTrace());
 			echo 'Error happened in the process. Please try again.';
 		}
 		$this->calldbClose();
@@ -110,8 +126,10 @@ class EmployeeModel extends aModel
 
 /////////////SELECT_BY_ID////////////
 
-	public function selectById($data,$colum,$colums)
+	public function selectById($data)
 	{
+		$colum = $data['colum'];
+		$colums = $data['colums'];
 		$row = 0;
 		try
 		{
