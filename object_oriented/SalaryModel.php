@@ -29,7 +29,11 @@ class SalaryModel extends aModel
 		try
 		{
 			$this->calldbConnect();
-			$this->checkIdExit($data, $colum);
+			$check = $this->checkIdExit($data['id'],$colum);
+			if($check == 0)
+			{
+				throw new Exception('id no exit');
+			}
 			mysql_query('set autocommit = 0');
 			mysql_query('begin');
 			
@@ -69,7 +73,11 @@ class SalaryModel extends aModel
 			$this->calldbConnect();
 			mysql_query('set autocommit = 0');
 			mysql_query('begin');
-			$this->checkIdExit($data['employee_code'], $colums);
+			$check = $this->checkIdExit($data['employee_code'], $colums);
+			if($check == 0)
+			{
+				throw new Exception('employee_code no exit');
+			}
 			$sql = "INSERT INTO $colum (employee_code, year, month, payment, created, modified) VALUES ('".$data['employee_code']."','".$data['year']."','".$data['month']."','".$data['payment']."', '".$data['created']."', '".$data['modified']."')";
 			$result = mysql_query($sql);
 			$count = mysql_insert_id();
@@ -109,8 +117,16 @@ class SalaryModel extends aModel
 			$this->calldbConnect();
 			mysql_query('set autocommit = 0');
 			mysql_query('begin');
-			$this->checkIdExit($data['id'], $colum);
-			$this->checkIdExit($data['employee_code'],$colums);
+			$check =  $this->checkIdExit($data['id'], $colum);
+			if($check == 0)
+			{
+				throw new Exception('id no exit');
+			}
+			$check = $this->checkIdExit($data['employee_code'],$colums);
+			if($check == 0)
+			{
+				throw new Exception('employee_code no exit');
+			}
 			$sql = "update $colum set employee_code='".$data['employee_code']."',year='".$data['year']."',month='".$data['month']."',payment='".$data['payment']."', created='".$data['created']."', modified='".$data['modified']."' where id = '".$data['id']."'";
 			$result = mysql_query($sql);
 			$count = mysql_affected_rows();

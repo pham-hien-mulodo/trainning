@@ -102,10 +102,14 @@ class EmployeeModel extends aModel
 		{
 			if(!$data->validate())
 			{
-				throw new Exception('valid ko dung dinh dang');
+				throw new Exception('valid ko dung dinh dang - ');
 			}
 			$this->calldbConnect();
-			$this->checkIdExit($data,$colums);
+			$check = $this->checkIdExit($data['id'],$colums);
+			if($check == 0)
+			{
+				throw new Exception('id no exit');
+			}
 			$sql = "update employee set name = '".$data['name']."', title = '".$data['title']."' , modified = '".$data['modified']."' where id = '".$data['id']."'";
 			$result = mysql_query($sql);
 			if(!isset($result))
@@ -134,8 +138,12 @@ class EmployeeModel extends aModel
 		try
 		{
 			$this->calldbConnect();
-			$this->checkIdExit();
-			$result = mysql_query("SELECT * FROM employee WHERE id='".$data['id']."'");
+			$check = $this->checkIdExit($data['id'],$colums);
+			if($check == 0)
+			{
+				throw new Exception('id no exit');
+			}
+			$result = mysql_query("SELECT * FROM $colums WHERE id='".$data['id']."'");
 			if(!isset($result))
 			{
 				throw new Exception('select by id no access');
