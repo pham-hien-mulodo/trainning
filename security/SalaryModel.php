@@ -45,11 +45,11 @@ class SalaryModel extends aModel
 			{
 				throw new Exception('delete salary no access');
 			}
-			mysql_query('commit');
+	//		mysql_query('commit');
 			$count = $sa;
 		} catch(Exception $e)
 		{
-			mysql_query('rollback');
+	//		mysql_query('rollback');
 			$error = error_log(date('m/d/Y H:i:s').' '.$e->getmessage().':');
 			echo $error;
 			print_r($e->getTrace());
@@ -91,9 +91,9 @@ class SalaryModel extends aModel
 			{
 				throw new Exception('insert salary no access');
 			}
-			mysql_query('commit');
+	//		mysql_query('commit');
 		} catch(Exception $e)
-		{
+	//	{
 			mysql_query('rollback');
 			$error = error_log(date('m/d/Y H:i:s').' '.$e->getmessage().':');
 			echo $error;

@@ -26,8 +26,8 @@ class EmployeeModel extends aModel
 		try
 		{
 			$this->calldbConnect();
-			mysql_query('set autocommit = 0');
-			mysql_query('begin');
+	//		mysql_query('set autocommit = 0');
+	//		mysql_query('begin');
 			$check = $this->checkIdExit($data['id'],$colums);
 			if($check == 0)
 			{
@@ -47,10 +47,10 @@ class EmployeeModel extends aModel
 			{
 				throw new Exception('delete employee no access');
 			}
-			mysql_query('commit');
+	//		mysql_query('commit');
 		} catch(Exception $e)
 		{
-			mysql_query('rollback');
+	//		mysql_query('rollback');
 			$error = error_log(date('m/d/Y H:i:s').' '.$e->getmessage().':');
 			echo $error;
 			print_r($e->getTrace());
@@ -71,8 +71,8 @@ class EmployeeModel extends aModel
 		try
 		{
 			$this->calldbConnect();
-			mysql_query('set autocommit = 0');
-			mysql_query('begin');
+	//		mysql_query('set autocommit = 0');
+	//		mysql_query('begin');
 			$sql = "INSERT INTO employee (name , title, created, modified) VALUES (?,?,?,?)";//('".$data['name']."','".$data['title']."' , '".$data['created']."', '".$data['modified']."')";
 			$result= $mysqli->prepare($sql);
 			$result->param('ssss',$data['name'],$data['title'],$data['created'],$data['modified']);
@@ -125,7 +125,7 @@ class EmployeeModel extends aModel
 				throw new Exception('update no access');
 			}
 			$count = mysql_affected_rows();
-			mysql_query('commit');
+	//		mysql_query('commit');
 		} catch(Exception $e)
 		{
 			$error = error_log(date('m/d/Y H:i:s').' '.$e->getmessage().':');
