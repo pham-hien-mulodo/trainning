@@ -16,11 +16,9 @@ $data['modified'] = date('Y-m-d H:i:s', $day);
 $data['process'] ='insert';
 $data['colum'] = 'salary';
 $data['colums'] = 'employee';
-$salary = new SalaryModel();
-//$salary->validation($data, $process);
-echo $salary->insert($data);
-/*
+//$salary = new SalaryModel();
+//echo $salary->insert($data);
+
 $employee = new EmployeeModel();
-$employee->validation($data,$process);
-echo $employee->insert($data);*/
+echo $employee->insert($data);
 
