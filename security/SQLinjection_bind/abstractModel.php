@@ -6,12 +6,12 @@ abstract class aModel
 	private $user = 'root';
 	private $password = '';
 	private $dbname = 'php_basics';
-	
+	protected $mysqli;
 //	protected $validate = null;
 
 	protected function dbConnect()
 	{
-		global $mysqli;
+		
 		try
 		{
 			$this->mysqli = new mysqli($this->host, $this->user, $this->password, $this->dbname);
@@ -43,12 +43,12 @@ abstract class aModel
 	protected function checkId($data, $colum)
 	{
 		try{
-		if($result = $this->mysqli->prepare("select count(id) as id from $colum where id = ? "))
+		if($result = $this->mysqli->prepare("select id from $colum where id = ? "))
 		{
 			$result -> bind_param('i', $data);
 			$result->execute();
-			$test = $result->affected_rows;
-			if($test['id'] != 1)
+			$count = $result->affected_rows;
+			if($count != 1)
 			{
 				throw new Exception('id no exit');
 			}else{ return true;}
@@ -64,7 +64,7 @@ abstract class aModel
 		return false;
 	}
 	abstract public function insert($data);
-	abstract public function update( $data);
+	abstract public function update($data);
 	abstract public function delete($data);
 	abstract public function selectById($data);
 	

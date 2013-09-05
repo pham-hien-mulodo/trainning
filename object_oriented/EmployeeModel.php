@@ -1,4 +1,5 @@
 <?php
+require_once('interface.php');
 require_once('Employee.php');
 require_once('abstractModel.php');
 class EmployeeModel extends aModel
@@ -20,11 +21,17 @@ class EmployeeModel extends aModel
 
 	public function delete($data)
 	{
+		$em = new Employee($data);
 		$colum = $data['colum'];
 		$colums = $data['colums'];
 		$count = 0;
 		try
 		{
+			$result = $em->validate($data);
+			if($result==0)
+			{
+				throw new Exception('valid ko dung dinh dang');
+			}
 			$this->calldbConnect();
 			mysql_query('set autocommit = 0');
 			mysql_query('begin');
@@ -62,11 +69,17 @@ class EmployeeModel extends aModel
 
 	public function insert($data)
 	{
+		$em = new Employee($data);
 		$colum = $data['colum'];
 		$colums = $data['colums'];
 		$count = 0;
 		try
 		{
+			$result = $em->validate($data);
+			if($result==0)
+			{
+				throw new Exception('valid ko dung dinh dang');
+			}
 			$this->calldbConnect();
 			mysql_query('set autocommit = 0');
 			mysql_query('begin');
@@ -96,19 +109,22 @@ class EmployeeModel extends aModel
 
 	public function update( $data)
 	{
-		
+		$colum = $data['colum'];
+		$colums = $data['colums'];
+		$em = new Employee($data);
 		$count = 0;
 		try
 		{
-			if(!$data->validate())
+			$result = $em->validate($data);
+			if($result == 0)
 			{
 				throw new Exception('valid ko dung dinh dang - ');
 			}
 			$this->calldbConnect();
 			$check = $this->checkIdExit($data['id'],$colums);
-			if($check == 0)
+			if(!isset($check))
 			{
-				throw new Exception('id no exit');
+				throw new Exception('check id no access');
 			}
 			$sql = "update employee set name = '".$data['name']."', title = '".$data['title']."' , modified = '".$data['modified']."' where id = '".$data['id']."'";
 			$result = mysql_query($sql);
@@ -120,6 +136,7 @@ class EmployeeModel extends aModel
 			mysql_query('commit');
 		} catch(Exception $e)
 		{
+			mysql_query('rollback');
 			$error = error_log(date('m/d/Y H:i:s').' '.$e->getmessage().':');
 			echo $error;
 			echo 'Error happened in the process. Please try again.';
@@ -132,11 +149,17 @@ class EmployeeModel extends aModel
 
 	public function selectById($data)
 	{
+		$em = new Employee($data);
 		$colum = $data['colum'];
 		$colums = $data['colums'];
 		$row = 0;
 		try
 		{
+			$result = $em->validate($data);
+			if($result==0)
+			{
+				throw new Exception('valid ko dung dinh dang');
+			}
 			$this->calldbConnect();
 			$check = $this->checkIdExit($data['id'],$colums);
 			if($check == 0)

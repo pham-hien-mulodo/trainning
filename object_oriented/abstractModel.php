@@ -43,14 +43,12 @@ abstract class aModel
 	protected function checkId($data, $colum)
 	{
 		try{
-		$this->dbConnect();
 		$result = mysql_query("select count(id) as id from $colum where id = $data");
 		$test = mysql_fetch_assoc($result);
 		if($test['id'] != 1)
 		{
 			throw new Exception('id no exit');
-			return false;
-		}else return true;
+		}else{ return true;}
 		} catch(Exception $e)
 		{
 			date_default_timezone_set('Asia/Bangkok');
@@ -60,7 +58,7 @@ abstract class aModel
 			print_r($e->getTrace());
 			echo 'Error happened in the process. Please try again.';
 		}
-		$this->dbClose();
+		return false;
 	}
 	abstract public function insert($data);
 	abstract public function update( $data);

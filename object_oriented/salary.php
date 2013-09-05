@@ -35,7 +35,7 @@ class Salary implements iEntity
 				'employee_code' => $this->valid_int($this->data['employee_code'], 1,11),
 				'payment' => $this->valid_int($this->data['payment'], 1,11),
 				'year' => $this->valid_int($this->data['year'],4,4),
-				'month' => $this->valid_int($this->data['month'], 1,2),
+				'month' => $this->valid_month($this->data['month']),
 				'modified' => $this->valid_date($this->data['modified']),
 				'created' => $this->valid_date($this->data['created'])
 			);
@@ -57,7 +57,7 @@ class Salary implements iEntity
 				'employee_code' => $this->valid_int($this->data['employee_code'], 1,11),
 				'payment' => $this->valid_int($this->data['payment'], 1,11),
 				'year' => $this->valid_int($this->data['year'], 4,4),
-				'month' => $this->valid_int($this->data['month'], 1,2),
+				'month' => $this->valid_month($this->data['month'], 1,2),
 				'modified' => $this->valid_date($this->data['modified'])
 				);
 				foreach($result as $result1)
@@ -70,6 +70,14 @@ class Salary implements iEntity
 				}
 				return 1;
 		}
+	}
+	public function valid_month($data)
+	{
+			if(preg_match("/^([1-9]|1[0-2])$/",$data))
+			{
+				return true;
+			}
+		return false;
 	}
 	public function valid_string($data, $minlength, $maxleng)
 	{

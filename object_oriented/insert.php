@@ -3,7 +3,7 @@ require_once('interface.php');
 require_once('EmployeeModel.php');
 require_once('SalaryModel.php');
 $data = array();
-$data['name'] = 'test ime';
+$data['name'] = 'testime';
 $data['title'] = 'a@in';
 $data['employee_code'] = 107;
 $data['year'] = 2013;

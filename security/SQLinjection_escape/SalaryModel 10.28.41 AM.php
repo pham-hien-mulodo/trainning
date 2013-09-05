@@ -4,6 +4,9 @@ require_once('Salary.php');
 require_once('abstractModel.php');
 class SalaryModel extends aModel
 {
+	public function __construct(){
+
+	}
 	protected function calldbConnect()
 	{
 		return $this->dbConnect();
@@ -20,28 +23,24 @@ class SalaryModel extends aModel
 ///////////////// DELETE //////////////////
 	public function delete($data)
 	{
-		$sa = new Salary($data);
+		foreach ($data as $key =>$value)
+		{
+			$data[$key] = mysql_real_escape_string($value);
+		}
 		$colum = $data['colum'];
 		$colums = $data['colums'];
 		$count = 0;
 		try
 		{
 			$this->calldbConnect();
-			$this->mysqli->autocommit(TRUE);
-			$this->mysqli->prepare('begin');
-			$result = $sa->validate($data);
-			if($result==0)
+		/*	$check = $this->checkIdExit($data['id'],$colum);
+			if($check == 0)
 			{
-				throw new Exception('valid ko dung dinh dang');
-			}
-			
-	/*		$check = $this->checkIdExit($data['id'],$colum);
-			if(!isset($check))
-			{
-				throw new Exception('check id error');
+				throw new Exception('id no exit');
 			}
 			*/
-			
+			$this->mysqli->autocommit(TRUE);
+			$this->mysqli->prepare('begin');
 			$sql = "DELETE FROM $colum WHERE id = ? ";
 			if($result = $this->mysqli->prepare($sql))
 			{
@@ -71,34 +70,36 @@ class SalaryModel extends aModel
 ////////////  INSERT  /////////////////////
 	public function insert($data)
 	{
+/*		foreach ($data as $key =>$value)
+		{
+			$data[$key] = mysql_real_escape_string($value);
+		}*/
 		$colum = $data['colum'];
 		$colums = $data['colums'];
 		$sa = new Salary($data);
 		$count = 0;
 		try
 		{
-			$this->calldbConnect();
-			$this->mysqli->autocommit(TRUE);
-			$this->mysqli->prepare('begin');
 			$result = $sa->validate($data);
 			if($result==0)
 			{
 				throw new Exception('valid ko dung dinh dang');
 			}
-			
+			$this->calldbConnect();
 		/*	$check = $this->checkIdExit($data['employee_code'], $colums);
 			if($check == 0)
 			{
 				throw new Exception('employee_code no exit');
 			}*/
-			
-			$sql = "INSERT INTO $colum (employee_code, year, month, payment, created, modified) VALUES (?,?,?,?,?,?)";
+			$this->mysqli->autocommit(TRUE);
+			$this->mysqli->prepare('begin');
+			$sql = "INSERT INTO $colum (employee_code, year, month, payment, created, modified) VALUES (?,?,?,?,?,?) ";
 			if($result = $this->mysqli->prepare($sql))
 			{
 				$result->bind_param("ssssss",$data['employee_code'], $data['year'], $data['month'], $data['payment'] , date("Y-m-d H:i:s"), date("Y-m-d H:i:s"));
 				$result->execute();
 				$count = $result->insert_id;
-		//		printf("id : %s----", $result->insert_id);
+				printf("id : %s----", $result->insert_id);
 				if($count <1)
 				{
 					throw new Exception('insert salary no access');
@@ -128,26 +129,25 @@ class SalaryModel extends aModel
 		$count = 0;
 		try
 		{
-			
-			$this->calldbConnect();
-			$this->mysqli->autocommit(TRUE);
-			$this->mysqli->prepare('begin');
 			$result = $sa->validate($data);
 			if($result==0)
 			{
 				throw new Exception('valid ko dung dinh dang');
 			}
-		/*	$check =  $this->checkIdExit($data['id'], $colum);
-			if(!isset($check))
+			$this->calldbConnect();
+			$this->mysqli->autocommit(TRUE);
+			$this->mysqli->prepare('begin');
+	/*		$check =  $this->checkIdExit($data['id'], $colum);
+			if($check == 0)
 			{
-				throw new Exception('check id error');
+				throw new Exception('id no exit');
 			}
 			$check = $this->checkIdExit($data['employee_code'],$colums);
-			if(!$check)
+			if($check == 0)
 			{
-				throw new Exception('check employee_code error ');
-			}
-			*/
+				throw new Exception('employee_code no exit');
+			}*/
+			
 			$sql = "UPDATE $colum SET employee_code=?, year=?, month=?,payment=?, modified=? where id = ?";
 			if($result = $this->mysqli->prepare($sql))
 			{
@@ -178,20 +178,11 @@ class SalaryModel extends aModel
 /////////////  SELECT ////////////////////////
 	public function selectById($data)
 	{
-		$sa = new Salary($data);
 		$colum = $data['colum'];
 		$colums = $data['colums'];
 		try
 		{
 			$this->calldbConnect();
-			$this->mysqli->autocommit(TRUE);
-			$this->mysqli->prepare('begin');
-			$result = $sa->validate($data);
-			if($result==0)
-			{
-				throw new Exception('valid ko dung dinh dang');
-			}
-			
 	/*		$check = $this->checkIdExit($data['id'],$colum);
 			print_r($check);
 			if($check == 0)
@@ -199,7 +190,8 @@ class SalaryModel extends aModel
 				throw new Exception('id no exit');
 			} 
 			*/
-			
+			$this->mysqli->autocommit(TRUE);
+			$this->mysqli->prepare('begin');
 			if($result = $this->mysqli->prepare("SELECT * FROM $colum WHERE id=?"))
 			{
 				$result->bind_param("i",$data['id']);

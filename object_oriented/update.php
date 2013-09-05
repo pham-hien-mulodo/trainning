@@ -2,10 +2,10 @@
 require_once('SalaryModel.php');
 require_once('EmployeeModel.php');
 $data = array();
-$data['name'] = 'update retest';
+$data['name'] = 'update etest';
 $data['title'] = 'admin';
 $data['employee_code'] = 111;
-$data['id'] = 91;
+$data['id'] = 135;
 $data['year'] = 2013;
 $data['month']= 12;
 $data['payment'] = 8800;
@@ -16,14 +16,13 @@ $data['modified'] = date('Y-m-d H:i:s', $day);
 $data['process'] ='update';
 $data['colum'] = 'salary';
 $data['colums'] = 'employee';
-$salary = new SalaryModel();
+//$salary = new SalaryModel();
 //$salary->validation($data, $process);
-echo $salary->update($data);
+//echo $salary->update($data);
 
 //print_r(class_implement(new SalaryModel($data));
-/*
+
 $employee = new EmployeeModel();
-$employee->validation($data,$process);
 echo $employee->update($data);
-*/
+
 

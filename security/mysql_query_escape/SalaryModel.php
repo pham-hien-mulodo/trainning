@@ -41,7 +41,10 @@ class SalaryModel extends aModel
 				throw new Exception('check id error');
 			}
 			*/
-			
+			foreach ($data as $key =>$value)
+			{
+				$data[$key] = mysql_real_escape_string($value);
+			}
 			$sql = "DELETE FROM $colum WHERE id = ? ";
 			if($result = $this->mysqli->prepare($sql))
 			{
@@ -86,12 +89,15 @@ class SalaryModel extends aModel
 				throw new Exception('valid ko dung dinh dang');
 			}
 			
-		/*	$check = $this->checkIdExit($data['employee_code'], $colums);
+			$check = $this->checkIdExit($data['employee_code'], $colums);
 			if($check == 0)
 			{
 				throw new Exception('employee_code no exit');
-			}*/
-			
+			}
+			foreach ($data as $key =>$value)
+			{
+				$data[$key] = mysql_real_escape_string($value);
+			}
 			$sql = "INSERT INTO $colum (employee_code, year, month, payment, created, modified) VALUES (?,?,?,?,?,?)";
 			if($result = $this->mysqli->prepare($sql))
 			{
@@ -137,7 +143,7 @@ class SalaryModel extends aModel
 			{
 				throw new Exception('valid ko dung dinh dang');
 			}
-		/*	$check =  $this->checkIdExit($data['id'], $colum);
+			$check =  $this->checkIdExit($data['id'], $colum);
 			if(!isset($check))
 			{
 				throw new Exception('check id error');
@@ -147,7 +153,11 @@ class SalaryModel extends aModel
 			{
 				throw new Exception('check employee_code error ');
 			}
-			*/
+			
+			foreach ($data as $key =>$value)
+			{
+				$data[$key] = mysql_real_escape_string($value);
+			}
 			$sql = "UPDATE $colum SET employee_code=?, year=?, month=?,payment=?, modified=? where id = ?";
 			if($result = $this->mysqli->prepare($sql))
 			{
@@ -192,14 +202,17 @@ class SalaryModel extends aModel
 				throw new Exception('valid ko dung dinh dang');
 			}
 			
-	/*		$check = $this->checkIdExit($data['id'],$colum);
+			$check = $this->checkIdExit($data['id'],$colum);
 			print_r($check);
 			if($check == 0)
 			{
 				throw new Exception('id no exit');
 			} 
-			*/
 			
+			foreach ($data as $key =>$value)
+			{
+				$data[$key] = mysql_real_escape_string($value);
+			}
 			if($result = $this->mysqli->prepare("SELECT * FROM $colum WHERE id=?"))
 			{
 				$result->bind_param("i",$data['id']);
