@@ -47,11 +47,19 @@ abstract class aModel
 		{
 			$result -> bind_param('i', $data);
 			$result->execute();
-
+			$result->bind_result($data);
 			if($result->execute())
 			{
-				throw new Exception('id no exit');
-			}else{ return true;}
+			  /* fetch values */
+				while ($result->fetch()) {
+					if($data <= 0)
+					throw new Exception('id no exit');
+				}
+				return true;
+			}
+			else{ 
+				throw new Exception('The query execute fail');
+			}
 		}
 		} catch(Exception $e)
 		{

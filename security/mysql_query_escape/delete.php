@@ -2,7 +2,7 @@
 require_once('SalaryModel.php');
 require_once('EmployeeModel.php');
 $data = array();
-$data['id'] = 163;
+$data['id'] = 190;
 $data['process'] ='delete';
 $data['colum'] = 'salary';
 $data['colums'] = 'employee';

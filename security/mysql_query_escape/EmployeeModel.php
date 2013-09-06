@@ -52,17 +52,17 @@ class EmployeeModel extends aModel
 				throw new Exception('select salary no access');
 			}
 			$count = $this->mysqli->affected_rows;
-			if($count >0)
+			echo $count;
+			echo "--";
+			while($count >0)
 			{
-			//	echo "id is employee_code in salary";
-				return $count = 0 ;
+				$result = $this->mysqli->query("DELETE FROM $colum WHERE employee_code = '".$data['id']."'");
+				if(!$result)
+				{
+					throw new Exception('delete salary no access');
+				}
+				$count = $this->mysqli->affected_rows;
 			}
-		/*	$result = mysql_query("DELETE FROM $colum WHERE employee_code = '".$data['id']."'");
-			if(!$result)
-			{
-				throw new Exception('delete salary no access');
-			}*/
-			$count = mysql_affected_rows();
 			$result = $this->mysqli->query("DELETE FROM $colums WHERE id = '".$data['id']."'");
 			if(!$result)
 			{
