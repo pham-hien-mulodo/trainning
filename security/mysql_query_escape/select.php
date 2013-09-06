@@ -9,7 +9,11 @@ date_default_timezone_set('Asia/Bangkok');
 $data['colum'] = 'salary';
 $data['colums'] = 'employee';
 $salary = new SalaryModel();
-$salary->selectById($data);
+$result = $salary->selectById($data);
 
 //$employee = new EmployeeModel();
-//$employee->selectById($data);
+//$result =$employee->selectById($data);
+while ($row = mysqli_fetch_row($result))
+{
+	printf("%s- %s - %s -%s - %s", $row[0], $row[1], $row[2], $row[3], $row[4]);
+}

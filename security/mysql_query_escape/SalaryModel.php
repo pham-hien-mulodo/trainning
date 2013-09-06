@@ -43,23 +43,15 @@ class SalaryModel extends aModel
 			*/
 			foreach ($data as $key =>$value)
 			{
-				$data[$key] = mysql_real_escape_string($value);
+				$data[$key] = $this->mysqli->real_escape_string($value);
 			}
-			$sql = "DELETE FROM $colum WHERE id = ? ";
-			if($result = $this->mysqli->prepare($sql))
+			$sql = "DELETE FROM $colum WHERE id = '".$data['id']."' ";
+			if(!$result = $this->mysqli->query($sql))
 			{
-				$result->bind_param('i',$data['id']);
-				$result->execute();
-				mysqli_stmt_store_result($result);
-				$sa = $result->affected_rows;
-				if($sa < 1)
-				{
-					throw new Exception('delete salary no access');
-				}
-				$result->close();
+				throw new Exception('delete salary no access');
 			}
+			$count = $this->mysqli->affected_rows;
 			$this->mysqli->commit();
-			$count = $sa;
 		} catch(Exception $e)
 		{
 			$this->mysqli->rollback();
@@ -96,21 +88,14 @@ class SalaryModel extends aModel
 			}
 			foreach ($data as $key =>$value)
 			{
-				$data[$key] = mysql_real_escape_string($value);
+				$data[$key] = $this->mysqli->real_escape_string($value);
 			}
-			$sql = "INSERT INTO $colum (employee_code, year, month, payment, created, modified) VALUES (?,?,?,?,?,?)";
-			if($result = $this->mysqli->prepare($sql))
+			$sql = "INSERT INTO $colum (employee_code, year, month, payment, created, modified) VALUES ('".$data['employee_code']."', '".$data['year']."', '".$data['month']."', '".$data['payment']."', '".$data['created']."', '".$data['modified']."' ) ";
+			if(!$result = $this->mysqli->query($sql))
 			{
-				$result->bind_param("ssssss",$data['employee_code'], $data['year'], $data['month'], $data['payment'] , date("Y-m-d H:i:s"), date("Y-m-d H:i:s"));
-				$result->execute();
-				$count = $result->insert_id;
-		//		printf("id : %s----", $result->insert_id);
-				if($count <1)
-				{
-					throw new Exception('insert salary no access');
-				}
-				$result->close();
+				throw new Exception('insert salary no access');
 			}
+			$count = $this->mysqli->insert_id;
 			$this->mysqli->commit();
 		} catch(Exception $e)
 		{
@@ -156,22 +141,14 @@ class SalaryModel extends aModel
 			
 			foreach ($data as $key =>$value)
 			{
-				$data[$key] = mysql_real_escape_string($value);
+				$data[$key] = $this->mysqli->real_escape_string($value);
 			}
-			$sql = "UPDATE $colum SET employee_code=?, year=?, month=?,payment=?, modified=? where id = ?";
-			if($result = $this->mysqli->prepare($sql))
+			$sql = "UPDATE $colum SET employee_code= '".$data['employee_code']."', year= '".$data['year']."', month= '".$data['month']."',payment= '".$data['payment']."', modified= '".$data['modified']."' where id = '".$data['id']."'";
+			if(!$result = $this->mysqli->query($sql))
 			{
-				$result->bind_param('ssssss',$data['employee_code'], $data['year'], $data['month'], $data['payment'], date("Y-m-d H:i:s"), $data['id']);
-				$result->execute();
-				printf(" rows: %s -- ",$result->affected_rows);
-				$count = $result->affected_rows;
-				if($count < 1)
-				{
-					throw new Exception('update salary no access');
-				}
-				
-				$result->close();
+				throw new Exception('update salary no access');
 			}
+			$count = $this->mysqli->affected_rows;
 			$this->mysqli->commit();
 		} catch(Exception $e)
 		{
@@ -183,7 +160,7 @@ class SalaryModel extends aModel
 		}
 		
 		$this->mysqli->close();
-		//return $count;
+		return $count;
 	}
 /////////////  SELECT ////////////////////////
 	public function selectById($data)
@@ -211,18 +188,12 @@ class SalaryModel extends aModel
 			
 			foreach ($data as $key =>$value)
 			{
-				$data[$key] = mysql_real_escape_string($value);
+				$data[$key] = $this->mysqli->real_escape_string($value);
 			}
-			if($result = $this->mysqli->prepare("SELECT * FROM $colum WHERE id=?"))
+			;
+			if(!$result = $this->mysqli->query("SELECT * FROM $colum WHERE id= '".$data['id']."'"))
 			{
-				$result->bind_param("i",$data['id']);
-				$result->execute();
-				$result->bind_result($data['id'], $data['employee_code'], $data['year'], $data['month'],$data['payment'],$data['created'],$data['modified']);
-				while ($result->fetch())
-				{
-					printf("%s - %s - %s - %s -%s - %s - %s \n",$data['id'], $data['employee_code'], $data['year'], $data['month'],$data['payment'],$data['created'],$data['modified']);
-				}
-				$result->close();
+				throw new Exception('select salary no access');
 			}
 			$this->mysqli->commit();
 		} catch(Exception $e)

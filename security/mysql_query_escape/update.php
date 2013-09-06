@@ -7,7 +7,7 @@ $data['title'] = 'admin';
 $data['employee_code'] = 91;
 $data['id'] = 150;
 $data['year'] = 2013;
-$data['month']= 14;
+$data['month']= 11;
 $data['payment'] = 8800;
 $day = time();
 date_default_timezone_set('Asia/Bangkok');
@@ -16,10 +16,10 @@ $data['modified'] = date('Y-m-d H:i:s', $day);
 $data['process'] ='update';
 $data['colum'] = 'salary';
 $data['colums'] = 'employee';
-//$salary = new SalaryModel();
-//echo $salary->update($data);
+$salary = new SalaryModel();
+echo $salary->update($data);
 echo "\n";
-$employee = new EmployeeModel();
-echo $employee->update($data);
+//$employee = new EmployeeModel();
+//echo $employee->update($data);
 
 
