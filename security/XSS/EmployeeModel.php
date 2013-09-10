@@ -45,7 +45,7 @@ class EmployeeModel extends aModel
 			}
 			foreach ($data as $key =>$value)
 			{
-				$data[$key] = $this->mysqli->real_escape_string($value);
+				$data[$key] = htmlspecialchars($this->mysqli->real_escape_string($value));
 			}
 			if(!$result = $this->mysqli->query("SELECT * FROM $colum WHERE employee_code = '".$data['id']."'"))
 			{
@@ -89,23 +89,25 @@ class EmployeeModel extends aModel
 		
 		$colum = $data['colum'];
 		$colums = $data['colums'];
-		$sa = new Salary($data);
+		$em = new Employee($data);
 		$count = null;
 		try
 		{
 			$this->calldbConnect();
 			$this->mysqli->autocommit(TRUE);
 			$this->mysqli->prepare('begin');
-			$result = $sa->validate($data);
+			$result = $em->validate($data);
+			
 			if($result==0)
 			{
 				throw new Exception('valid ko dung dinh dang');
 			}
 			
 			foreach ($data as $key =>$value)
-			{//if(get_magic_quotes_gpc()) $data[$key]=stripslashes($value);
-				$data[$key] = $this->mysqli->real_escape_string($value);
+			{
+				$data[$key] = htmlspecialchars($this->mysqli->real_escape_string($value));
 			}
+	//		var_dump($data);
 			$sql = "INSERT INTO $colums (name , title, created, modified) VALUES ('".$data['name']."','".$data['title']."' , '".$data['created']."', '".$data['modified']."')";
 			if(!$result = $this->mysqli->query($sql))
 			{
@@ -138,6 +140,7 @@ class EmployeeModel extends aModel
 			$this->calldbConnect();
 			$this->mysqli->autocommit(TRUE);
 			$this->mysqli->prepare('begin');
+			var_dump($data);
 			$result = $em->validate($data);
 			if($result==0)
 			{
@@ -149,12 +152,12 @@ class EmployeeModel extends aModel
 			{
 				throw new Exception('id no exit');
 			}
+			
 			foreach ($data as $key =>$value)
 			{
-				$data[$key] = $this->mysqli->real_escape_string($data[$key]);
+				$data[$key] = htmlspecialchars($this->mysqli->real_escape_string($value));
 			}
-			$sql = "update $colums set name =  1 OR 1 = 1, title = '".$data['title']."' , modified = '".$data['modified']."' where id = '".$data['id']."'";
-			var_dump($sql);
+			$sql = "update $colums set name = '".$data['name']."', title = '".$data['title']."' , modified = '".$data['modified']."' where id = '".$data['id']."'";
 			if(!$result = $this->mysqli->query($sql))
 			{
 				throw new Exception('update employee no access');
@@ -192,7 +195,7 @@ class EmployeeModel extends aModel
 			{
 				throw new Exception('valid ko dung dinh dang');
 			}
-			$check = $this->checkIdExit($data['id'],$colum);
+			$check = $this->checkIdExit($data['id'],$colums);
 		//	print_r($check);
 			if(!$check)
 			{
@@ -202,9 +205,15 @@ class EmployeeModel extends aModel
 			{
 				$data[$key] = $this->mysqli->real_escape_string($value);
 			}
-			if(!$result = $this->mysqli->query("SELECT * FROM $colums WHERE id='".$data['id']."'"))
+			$result = $this->mysqli->query("SELECT * FROM $colums WHERE id='".$data['id']."'");
+			if(!$result)
 			{
 				throw new Exception('select employee no access');
+			}
+			$result = $result->fetch_array(MYSQLI_ASSOC);
+			foreach ($result as $key =>$value)
+			{
+				$result[$key] = htmlspecialchars($value);
 			}
 			$this->mysqli->commit();
 		} catch(Exception $e)

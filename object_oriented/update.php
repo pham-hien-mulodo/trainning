@@ -2,7 +2,7 @@
 require_once('SalaryModel.php');
 require_once('EmployeeModel.php');
 $data = array();
-$data['name'] = 'update etest';
+$data['name'] = "' OR ''='";
 $data['title'] = 'admin';
 $data['employee_code'] = 111;
 $data['id'] = 135;

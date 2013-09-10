@@ -35,12 +35,12 @@ class SalaryModel extends aModel
 				throw new Exception('valid ko dung dinh dang');
 			}
 			
-	/*		$check = $this->checkIdExit($data['id'],$colum);
+			$check = $this->checkIdExit($data['id'],$colum);
 			if(!isset($check))
 			{
 				throw new Exception('check id error');
 			}
-			*/
+			
 			foreach ($data as $key =>$value)
 			{
 				$data[$key] = $this->mysqli->real_escape_string($value);
@@ -124,7 +124,7 @@ class SalaryModel extends aModel
 			$this->mysqli->autocommit(TRUE);
 			$this->mysqli->prepare('begin');
 			$result = $sa->validate($data);
-			if($result==0)
+			if(!$result)
 			{
 				throw new Exception('valid ko dung dinh dang');
 			}

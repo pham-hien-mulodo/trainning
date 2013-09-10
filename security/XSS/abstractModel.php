@@ -43,7 +43,7 @@ abstract class aModel
 	protected function checkId($data, $colum)
 	{
 		try{
-		if($result = $this->mysqli->prepare("select id from $colum where id = ? "))
+		if($result = $this->mysqli->prepare("select count(id) as id from $colum where id = ? "))
 		{
 			$result -> bind_param('i', $data);
 			$result->execute();

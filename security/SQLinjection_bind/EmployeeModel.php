@@ -89,12 +89,12 @@ class EmployeeModel extends aModel
 				throw new Exception('valid ko dung dinh dang');
 			}
 			
-	/*		$check = $this->checkIdExit($data['employee_code'], $colums);
+			$check = $this->checkIdExit($data['employee_code'], $colums);
 			if(!isset($check))
 			{
 				throw new Exception('employee_code no exit');
 			}
-			*/
+			
 			$sql = "INSERT INTO $colums (name , title, created, modified) VALUES (?,?,?,?)";
 			if($result = $this->mysqli->prepare($sql))
 			{
@@ -139,14 +139,13 @@ class EmployeeModel extends aModel
 			{
 				throw new Exception('valid ko dung dinh dang');
 			}
-			/*
+			
 			$check = $this->checkIdExit($data['id'],$colums);
 			if($check == 0)
 			{
 				throw new Exception('id no exit');
 			}
 			
-			*/
 			$sql = "update $colums set name = ?, title = ? , modified = ? where id = ?";
 			if($result = $this->mysqli->prepare($sql))
 			{

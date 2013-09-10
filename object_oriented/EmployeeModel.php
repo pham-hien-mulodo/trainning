@@ -126,7 +126,9 @@ class EmployeeModel extends aModel
 			{
 				throw new Exception('check id no access');
 			}
+			
 			$sql = "update employee set name = '".$data['name']."', title = '".$data['title']."' , modified = '".$data['modified']."' where id = '".$data['id']."'";
+			var_dump($sql);
 			$result = mysql_query($sql);
 			if(!isset($result))
 			{
