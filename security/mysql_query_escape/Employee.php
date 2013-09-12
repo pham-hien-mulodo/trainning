@@ -59,7 +59,6 @@ class Employee implements iEntity
 	}
 	public function valid_string($data, $minlength, $maxleng)
 	{
-	//	try{
 		$daty = trim($data);
 		if(!empty($daty))
 		{
@@ -68,21 +67,13 @@ class Employee implements iEntity
 				if(is_string($data))
 				{
 					return true;
-				}//else { throw new Exception('data type string false'); return false;}
-			}//else { throw new Exception('string length false'); return false;}
-		}//else { throw new Exception('string empty'); return flase;}
-	//	} catch(Exception $e)
-	//	{
-	//		$error = error_log(date('m/d/Y H:i:s').' '.$e->getmessage().':');
-	//		echo $error;
-	//		print_r($e->getTrace());
-	//		echo 'Error happened in the process. Please try again.';
-	//	}
+				}
+			}
+		}
 		return false;
 	}
 	public function valid_date(&$data)
 	{
-	//	try{
 		$daty = trim($data);
 		if(!empty($daty))
 		{
@@ -91,18 +82,13 @@ class Employee implements iEntity
 				if(checkdate($matches[2], $matches[3], $matches[1]))
 				{
 				return true;
-				}//else { throw new Exception('date no exit'); return false;}
-			}//else { throw new Exception('format date false'); return false;}
-		}//else { throw new Exception('date empty'); return false;}
-	//	} catch(Exception $e)
-	//	{
-	//		echo $e->getmessage();
-	//	}
+				}
+			}
+		}
 		return false;
 	}
 	public function valid_int($data, $minlength, $maxleng)
 	{
-	//	try{
 		$daty=trim($data);
 		if(!empty($daty))
 		{
@@ -112,23 +98,8 @@ class Employee implements iEntity
 				{
 					return true;
 				}
-	//			else
-	//			{
-	//				throw new Exception('data no type int');
-	//			}
 			}
-	//		else
-	//		{
-	//			throw new Exception('int length false');
-	//		}
 		}
-	//	} catch(Exception $e)
-	//	{
-	//		$error = error_log(date('m/d/Y H:i:s').' '.$e->getmessage().':');
-	//		echo $error;
-	//		print_r($e->getTrace());
-	//		echo 'Error happened in the process. Please try again.';
-	//	}
 		return false;
 	}
 }

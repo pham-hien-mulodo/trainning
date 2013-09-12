@@ -1,5 +1,5 @@
 <?php
-//require_once('abstractModel.php');
+
 class Salary implements iEntity
 {
 	public $state;
@@ -12,11 +12,6 @@ class Salary implements iEntity
 	{
 		$this->data = $data;
 		$this->state = $data['process'];
-	//	$this->id = $data['id'];
-	//	$this->employee_code = $data['employee_code'];
-	//	$this->year = $data['year'];
-	//	$this->month = $data['month'];
-	//	$this->sal = $data['payment'];
 	}
 	public function validate()
 	{
@@ -39,7 +34,6 @@ class Salary implements iEntity
 				'modified' => $this->valid_date($this->data['modified']),
 				'created' => $this->valid_date($this->data['created'])
 			);
-		//	print_r($result);
 			foreach($result as $result1)
 			{
 				if($result1 == 0)
@@ -51,7 +45,6 @@ class Salary implements iEntity
 		}
 		if($this->state == 'update')
 		{
-
 				$result = array(
 				'id' => $this->valid_int($this->data['id'], 1,11),
 				'employee_code' => $this->valid_int($this->data['employee_code'], 1,11),
@@ -81,7 +74,6 @@ class Salary implements iEntity
 	}
 	public function valid_string($data, $minlength, $maxleng)
 	{
-	// 	try{
 		$daty = trim($data);
 		if(!empty($daty))
 		{
@@ -90,21 +82,13 @@ class Salary implements iEntity
 				if(is_string($data))
 				{
 					return true;
-				}//else { throw new Exception('data type string false'); return false;}
-			}//else { throw new Exception('string length false'); return false;}
-		}//else { throw new Exception('string empty'); return flase;}
-	//	} catch(Exception $e)
-	//	{
-	//		$error = error_log(date('m/d/Y H:i:s').' '.$e->getmessage().':');
-	//		echo $error;
-	//		print_r($e->getTrace());
-	//		echo 'Error happened in the process. Please try again.';
-	//	}
+				}
+			}
+		}
 		return false;
 	}
 	public function valid_date(&$data)
 	{
-	//	try{
 		$daty = trim($data);
 		if(!empty($daty))
 		{
@@ -113,18 +97,13 @@ class Salary implements iEntity
 				if(checkdate($matches[2], $matches[3], $matches[1]))
 				{
 				return true;
-				}//else { throw new Exception('date no exit'); return false;}
-			}//else { throw new Exception('format date false'); return false;}
-		}//else { throw new Exception('date empty'); return false;}
-	//	} catch(Exception $e)
-	//	{
-	//		echo $e->getmessage();
-	//	}
+				}
+			}
+		}
 		return false;
 	}
 	public function valid_int($data, $minlength, $maxleng)
 	{		
-	//	try{
 		$daty=trim($data);
 		if(!empty($daty))
 		{
@@ -134,24 +113,8 @@ class Salary implements iEntity
 				{
 					return 1;
 				}
-			//	else
-			//	{
-			//		throw new Exception('data no type int');
-			//	}
 			}
-		//	else
-		//	{
-		//		throw new Exception('int length false');
-		//	}
 		}
-	//	} catch(Exception $e)
-	//	{
-	//		$error = error_log(date('m/d/Y H:i:s').' '.$e->getmessage().':');
-	//		echo $error;
-	//		print_r($e->getTrace());
-	//		echo 'Error happened in the process. Please try again.';
-	//	}
-
 		return 0;
 	}
 }

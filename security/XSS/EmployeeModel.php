@@ -162,7 +162,6 @@ class EmployeeModel extends aModel
 			{
 				throw new Exception('update employee no access');
 			}
-	//		printf("Affected rows (UPDATE): %d\n",$this->mysqli->affected_rows);
 			$count = $this->mysqli->affected_rows;
 			$this->mysqli->commit();
 		} catch(Exception $e)
@@ -196,7 +195,6 @@ class EmployeeModel extends aModel
 				throw new Exception('valid ko dung dinh dang');
 			}
 			$check = $this->checkIdExit($data['id'],$colums);
-		//	print_r($check);
 			if(!$check)
 			{
 				throw new Exception('id no exit');
