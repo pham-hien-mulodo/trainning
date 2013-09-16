@@ -212,6 +212,21 @@ class SalaryModel extends aModel
 		$this->mysqli->close();
 		return $result;
 	}
+	public function select_all()
+	{
+		$this->calldbConnect();
+		$this->mysqli->autocommit(TRUE);
+		$this->mysqli->prepare('begin');
+		$result = $this->mysqli->query("SELECT * FROM salary");
+		if(!isset($result)){ echo "eror";}
+		while($row = $result->fetch_array()){  
+			$data[] = $row;
+		}
+		$this->mysqli->close();
+		return $data;
+		
+
+	}
 }
 
 

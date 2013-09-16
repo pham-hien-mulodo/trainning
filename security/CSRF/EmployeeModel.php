@@ -30,23 +30,10 @@ class EmployeeModel extends aModel
 			$this->calldbConnect();
 			$this->mysqli->autocommit(TRUE);
 			$this->mysqli->prepare('begin');
-			$result = $em->validate($data);
-			
-			if(!$result)
-			{
-				throw new Exception('valid ko dung dinh dang');
-			}
-			
 			$check = $this->checkIdExit($data['id'],$colums);
 			if($check<1)
 			{
-				//echo "id no exit";
 				throw new Exception('id no exit');
-			}
-			$check = $this->checktoken($data);
-			if($check <= 0)
-			{
-				throw new Exception('token no match');
 			}
 			foreach ($data as $key =>$value)
 			{
@@ -57,8 +44,6 @@ class EmployeeModel extends aModel
 				throw new Exception('select salary no access');
 			}
 			$count = $this->mysqli->affected_rows;
-			echo $count;
-			echo "--";
 			while($count >0)
 			{
 				$result = $this->mysqli->query("DELETE FROM $colum WHERE employee_code = '".$data['id']."'");
@@ -85,7 +70,7 @@ class EmployeeModel extends aModel
 		}
 		$this->mysqli->close();
 		return $count;
-	}// kiem tra id ton tai: check_id_exit()
+	}
 
 //////////////INSERT////////////////
 
@@ -112,8 +97,7 @@ class EmployeeModel extends aModel
 			{
 				$data[$key] = htmlspecialchars($this->mysqli->real_escape_string($value));
 			}
-	//		var_dump($data);
-			$sql = "INSERT INTO $colums (name , title,token, created, modified) VALUES ('".$data['name']."','".$data['title']."' , '".$data['token']."','".$data['created']."', '".$data['modified']."')";
+			$sql = "INSERT INTO $colums (name , title, created, modified) VALUES ('".$data['name']."','".$data['title']."' ,'".$data['created']."', '".$data['modified']."')";
 			var_dump($sql);
 			if(!$result = $this->mysqli->query($sql))
 			{
@@ -146,27 +130,16 @@ class EmployeeModel extends aModel
 			$this->calldbConnect();
 			$this->mysqli->autocommit(TRUE);
 			$this->mysqli->prepare('begin');
-			var_dump($data);
-			$result = $em->validate($data);
-			if($result==0)
-			{
-				throw new Exception('valid ko dung dinh dang');
-			}
-			
 			$check = $this->checkIdExit($data['id'],$colums);
 			if($check == 0)
 			{
 				throw new Exception('id no exit');
 			}
-			$check = $this->checktoken($data);
-			if($check <= 0)
-			{
-				throw new Exception('token no match');
-			}
+			
 			foreach ($data as $key =>$value)
 			{
 				$data[$key] = htmlspecialchars($this->mysqli->real_escape_string($value));
-			}
+			} 
 			$sql = "update $colums set name = '".$data['name']."', title = '".$data['title']."' , modified = '".$data['modified']."' where id = '".$data['id']."'";
 			if(!$result = $this->mysqli->query($sql))
 			{
@@ -191,32 +164,18 @@ class EmployeeModel extends aModel
 
 	public function selectById($data)
 	{
-
-
-		
 		$em = new Employee($data);
-		$colum = $data['colum'];
 		$colums = $data['colums'];
 		try
 		{
 			$this->calldbConnect();
 			$this->mysqli->autocommit(TRUE);
 			$this->mysqli->prepare('begin');
-			$result = $em->validate($data);
-			if($result==0)
-			{
-				throw new Exception('valid ko dung dinh dang');
-			}
 			$check = $this->checkIdExit($data['id'],$colums);
 			if($check <= 0)
 			{
 				throw new Exception('id no exit');
 			}
-		/*	$check = $this->checktoken($data);
-			if($check <= 0)
-			{
-				throw new Exception('token no match');
-			}*/
 			foreach ($data as $key =>$value)
 			{
 				$data[$key] = $this->mysqli->real_escape_string($value);
@@ -243,41 +202,19 @@ class EmployeeModel extends aModel
 		$this->mysqli->close();
 		return $result;
 	}
-	public function checktoken($data)
+	public function select_all()
 	{
-		$colums= $data['colums'];
-	//	$em = new Employee($data);
 		$this->calldbConnect();
 		$this->mysqli->autocommit(TRUE);
 		$this->mysqli->prepare('begin');
-		$colums= $data['colums']; 
-		
-		$result = $this->mysqli->query("SELECT token FROM $colums WHERE id='".$data['id']."'");
-		$result = $result->fetch_array(MYSQLI_ASSOC);
-		if($result['token'] == $data['token'])
-		{
-			$token = sha1(uniqid(rand(),TRUE));
-			$result = $this->mysqli->query("UPDATE $colums SET token = '".$token."' WHERE id = '".$data['id']."' ");
-			if($result){ return 1;}
+		$result = $this->mysqli->query("SELECT * FROM employee");
+		if(!isset($result)){ echo "eror";}
+		while($row = $result->fetch_array()){  
+			$data[] = $row;
 		}
-		else return 0;
-		
+		return $data;
 		$this->mysqli->close();
-		
-	}
-	public function create_token($data)
-	{
-		$this->calldbConnect();
-		$this->mysqli->autocommit(TRUE);
-		$this->mysqli->prepare('begin');
-		$colums= $data['colums'];
-		$token = sha1(uniqid(rand(),TRUE));
-		echo $token;
-		$result = $this->mysqli->query("UPDATE $colums SET token = '".$token."' WHERE id = '".$data['id']."' ");
-		if($result)
-		{
-			return true;
-		}else return false;
+
 	}
 }
 

@@ -13,7 +13,7 @@ class Employee implements iEntity
 	}
 	public function validate()
 	{
-		if($this->state == 'delete' || $this->state == 'selectById')
+	/*	if($this->state == 'delete' || $this->state == 'selectById')
 		{
 			$result = $this->valid_int($this->data['id'], 1,11);
 			if($result == 1)
@@ -21,7 +21,7 @@ class Employee implements iEntity
 				return 1;
 				}
 			else return 0;
-		}
+		}*/
 		if($this->state=='insert')
 		{
 			$result = array(
@@ -42,7 +42,7 @@ class Employee implements iEntity
 		if($this->state == 'update')
 		{
 			$result = array(
-				'id' => $this->valid_int($this->data['id'], 1,11),
+			//	'id' => $this->valid_int($this->data['id'], 1,11),
 				'name' => $this->valid_string($this->data['name'], 1,50),
 				'title' => $this->valid_string($this->data['title'], 1,50),
 				'modified' => $this->valid_date($this->data['modified'])
