@@ -24,8 +24,8 @@ $token = $_SESSION['token'] =sha1(uniqid(rand(),true));
 <td> <?php echo $data['title'] ?> </td>
 <td> <?php echo $data['created'] ?> </td>
 <td> <?php echo $data['modified'] ?> </td>
-<td> <form action="select.php/?id=<?php echo $data['id']; ?>" method = "POST"> 
-<button><a href='select.php'>Update</a></button>
+<td> <form action="update.php/?id=<?php echo $data['id']; ?>" method = "POST"> 
+<button><a href='update.php'>Update</a></button>
  <input type='hidden' name='token' value="<?php echo $token;?>" />
 </form></td>
 <td> <form action="delete.php/?id=<?php echo $data['id']; ?>" method = "POST"> 

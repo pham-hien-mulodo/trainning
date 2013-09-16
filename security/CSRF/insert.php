@@ -6,7 +6,6 @@ require_once('EmployeeModel.php');
 require_once('SalaryModel.php');
 $data = array();
 $data = $_POST;
-
 $token = $_SESSION['token'];
 ?>
 <html>

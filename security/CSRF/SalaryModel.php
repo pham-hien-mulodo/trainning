@@ -169,7 +169,7 @@ class SalaryModel extends aModel
 			$this->calldbConnect();
 			$this->mysqli->autocommit(TRUE);
 			$this->mysqli->prepare('begin');
-			$result = $sa->validate($data);
+		/*	$result = $sa->validate($data);
 			if($result==0)
 			{
 				throw new Exception('valid ko dung dinh dang');
@@ -185,17 +185,17 @@ class SalaryModel extends aModel
 			foreach ($data as $key =>$value)
 			{
 				$data[$key] = $this->mysqli->real_escape_string($value);
-			}
+			}*/
 			$result = $this->mysqli->query("SELECT * FROM $colum WHERE id= '".$data['id']."'");
 			if(!$result)
 			{
 				throw new Exception('select salary no access');
 			}
 			$result = $result->fetch_array(MYSQLI_ASSOC);
-			foreach ($result as $key => $value)
+		/*	foreach ($result as $key => $value)
 			{
 				$result[$key] = htmlspecialchars($value);
-			}
+			}*/
 			$this->mysqli->commit();
 		} catch(Exception $e)
 		{
