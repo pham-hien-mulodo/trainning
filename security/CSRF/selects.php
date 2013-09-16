@@ -5,18 +5,16 @@ require_once('SalaryModel.php');
 require_once('EmployeeModel.php');
 $data = array();
 $token = $_SESSION['token'] =sha1(uniqid(rand(),true));
-$data['id'] = $_GET['id'];
+$data['id'] = (int)$_GET['id'];
 $data['process'] = 'selectById';
-$colum = 'salary';
 date_default_timezone_set('Asia/Bangkok');
 $data['colum'] = 'salary';
 $data['colums'] = 'employee';
-$em = new EmployeeModel();
-$data= $em->selectById($data);
+$salary = new SalaryModel();
+$data= $salary->selectById($data);
 ?>
 <html>
-<head>
-	<title>Update</title>
+<head><title>Update</title>
 </head>
 <body>
 <form action="updates.php/?id=<?php echo $data['id']; ?>" method = "POST"> 

@@ -41,10 +41,6 @@ class SalaryModel extends aModel
 				throw new Exception('check id error');
 			}
 			
-	/*		foreach ($data as $key =>$value)
-			{
-				$data[$key] = htmlspecialchars($this->mysqli->real_escape_string($value));
-			}*/
 			$sql = "DELETE FROM $colum WHERE id = '".$data['id']."' ";
 			if(!$result = $this->mysqli->query($sql))
 			{
@@ -75,12 +71,12 @@ class SalaryModel extends aModel
 			$this->calldbConnect();
 			$this->mysqli->autocommit(TRUE);
 			$this->mysqli->prepare('begin');
-			$result = $sa->validate($data);
+		/*	$result = $sa->validate($data);
 			if($result==0)
 			{
 				throw new Exception('valid ko dung dinh dang');
 			}
-			
+			*/
 			$check = $this->checkIdExit($data['employee_code'], $colums);
 			if($check == 0)
 			{
@@ -88,7 +84,7 @@ class SalaryModel extends aModel
 			}
 			foreach ($data as $key =>$value)
 			{
-				$data[$key] = htmlspeciachars($this->mysqli->real_escape_string($value));
+				$data[$key] = htmlspecialchars($this->mysqli->real_escape_string($value));
 			}
 			$sql = "INSERT INTO $colum (employee_code, year, month, payment, created, modified) VALUES ('".$data['employee_code']."', '".$data['year']."', '".$data['month']."', '".$data['payment']."', '".$data['created']."', '".$data['modified']."' ) ";
 			if(!$result = $this->mysqli->query($sql))
@@ -123,11 +119,11 @@ class SalaryModel extends aModel
 			$this->calldbConnect();
 			$this->mysqli->autocommit(TRUE);
 			$this->mysqli->prepare('begin');
-			$result = $sa->validate($data);
+		/*	$result = $sa->validate($data);
 			if(!$result)
 			{
 				throw new Exception('valid ko dung dinh dang');
-			}
+			}*/
 			$check =  $this->checkIdExit($data['id'], $colum);
 			if(!isset($check))
 			{

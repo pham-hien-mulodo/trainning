@@ -4,10 +4,11 @@ session_start();
 require_once('SalaryModel.php');
 require_once('EmployeeModel.php');
 $data = array();
-$data['id'] = $_GET['id'];
+$data['id'] = (int)$_GET['id'];
 $data['token'] = $_POST['token'];
+var_dump($_POST['token']);
 $em = new EmployeeModel();
-if($data['token'] == $_SESSION['token']){
+if(!empty($data['token']) && $data['token'] == $_SESSION['token']){
 if (isset($_POST['name']) || isset($_POST['title']) ){
 	$result['id'] = $data['id'];
 	$result['process'] = 'update';
@@ -23,10 +24,11 @@ if (isset($_POST['name']) || isset($_POST['title']) ){
 	{
 		echo "error";
 	}
+	else
+	echo $result;
 }
 }
 ?>
-Update success!
 
 
 

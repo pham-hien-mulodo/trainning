@@ -30,6 +30,11 @@ class EmployeeModel extends aModel
 			$this->calldbConnect();
 			$this->mysqli->autocommit(TRUE);
 			$this->mysqli->prepare('begin');
+			$result = $em->validate($data);
+			if($result==0)
+			{
+				throw new Exception('valid ko dung dinh dang');
+			}
 			$check = $this->checkIdExit($data['id'],$colums);
 			if($check<1)
 			{
@@ -87,12 +92,10 @@ class EmployeeModel extends aModel
 			$this->mysqli->autocommit(TRUE);
 			$this->mysqli->prepare('begin');
 			$result = $em->validate($data);
-
 			if($result==0)
 			{
 				throw new Exception('valid ko dung dinh dang');
 			}
-			
 			foreach ($data as $key =>$value)
 			{
 				$data[$key] = htmlspecialchars($this->mysqli->real_escape_string($value));
@@ -130,12 +133,16 @@ class EmployeeModel extends aModel
 			$this->calldbConnect();
 			$this->mysqli->autocommit(TRUE);
 			$this->mysqli->prepare('begin');
+			$result = $em->validate($data);
+			if($result==0)
+			{
+				throw new Exception('valid ko dung dinh dang');
+			}
 			$check = $this->checkIdExit($data['id'],$colums);
 			if($check == 0)
 			{
 				throw new Exception('id no exit');
 			}
-			
 			foreach ($data as $key =>$value)
 			{
 				$data[$key] = htmlspecialchars($this->mysqli->real_escape_string($value));
@@ -188,7 +195,7 @@ class EmployeeModel extends aModel
 			$result = $result->fetch_array(MYSQLI_ASSOC);
 			foreach ($result as $key =>$value)
 			{
-				$result[$key] = htmlspecialchars($value);
+				$result[$key] = htmlspecialchars_decode($value);
 			}
 			$this->mysqli->commit();
 		} catch(Exception $e)
@@ -209,7 +216,13 @@ class EmployeeModel extends aModel
 		$this->mysqli->prepare('begin');
 		$result = $this->mysqli->query("SELECT * FROM employee");
 		if(!isset($result)){ echo "eror";}
+		
 		while($row = $result->fetch_array()){  
+			/*
+			foreach ($row as $key =>$value)
+			{
+				$row[$key] = htmlspecialchars_decode($value);
+			}*/
 			$data[] = $row;
 		}
 		return $data;

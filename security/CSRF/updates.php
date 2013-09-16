@@ -4,12 +4,11 @@ session_start();
 require_once('SalaryModel.php');
 require_once('EmployeeModel.php');
 $data = array();
-$data['id'] = $_GET['id'];
+$data['id'] = (int)$_GET['id'];
 $data['token'] = $_POST['token'];
-$em = new EmployeeModel();
+$salary = new SalaryModel();
 if($data['token'] == $_SESSION['token']){
-if (isset($_POST['name']) || isset($_POST['title']) ){
-	$result['id'] = $data['id'];
+	$result['id'] = (int)$data['id'];
 	$result['process'] = 'update';
 	date_default_timezone_set('Asia/Bangkok');
 	$result['colum'] = 'salary';
@@ -20,15 +19,16 @@ if (isset($_POST['name']) || isset($_POST['title']) ){
 	$result['payment'] = $_POST['payment'];
 	$day = time();
 	$result['modified'] = date('Y-m-d H:i:s', $day);
-	$result= $em->update($result);
+	$result= $salary->update($result);
 	if(!isset($result))
 	{
 		echo "error";
 	}
-}
+	else echo $result;
+
 }
 ?>
-Update success!
+
 
 
 

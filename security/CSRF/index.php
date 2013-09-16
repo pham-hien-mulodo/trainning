@@ -1,4 +1,5 @@
 <?php 
+ob_start();
 session_start();
 require_once('SalaryModel.php');
 require_once('EmployeeModel.php');
@@ -23,8 +24,14 @@ $token = $_SESSION['token'] =sha1(uniqid(rand(),true));
 <td> <?php echo $data['title'] ?> </td>
 <td> <?php echo $data['created'] ?> </td>
 <td> <?php echo $data['modified'] ?> </td>
-<td> <a href='select.php?id=<?php echo $data['id'] ?>'>Update</a></td>
-<td>  <a href='delete.php?id=<?php echo $data['id'] ?>'>Delete</a><form method = "POST"><input type='hidden' name='token' value="<?php echo $token;?>" /></form>
+<td> <form action="select.php/?id=<?php echo $data['id']; ?>" method = "POST"> 
+<button><a href='select.php'>Update</a></button>
+ <input type='hidden' name='token' value="<?php echo $token;?>" />
+</form></td>
+<td> <form action="delete.php/?id=<?php echo $data['id']; ?>" method = "POST"> 
+<button><a href='delete.php'>Delete</a></button>
+ <input type='hidden' name='token' value="<?php echo $token;?>" />
+</form>
 </td>
 
 </tr>

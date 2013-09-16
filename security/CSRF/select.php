@@ -1,18 +1,24 @@
 <?php
-ob_start();
+
 session_start();
 require_once('SalaryModel.php');
 require_once('EmployeeModel.php');
 $data = array();
-$token = $_SESSION['token'] =sha1(uniqid(rand(),true));
-$data['id'] = $_GET['id'];
+$data['token'] = $_POST['token'];
+var_dump($_POST['token']);
+$data['id'] = (int)$_GET['id'];
 $data['process'] = 'selectById';
 $colum = 'salary';
 date_default_timezone_set('Asia/Bangkok');
 $data['colum'] = 'salary';
 $data['colums'] = 'employee';
 $em = new EmployeeModel();
+if($data['token'] == $_SESSION['token'])
+{
 $data= $em->selectById($data);
+}
+$token = $_SESSION['token'];
+var_dump($_SESSION['token']);
 ?>
 <html>
 <head>
@@ -27,6 +33,7 @@ $data= $em->selectById($data);
 <button><a href='index.php'>Back</a></button>
  <input type='hidden' name='token' value="<?php echo $token;?>" />
 </form>
+
 </body>
 </html>
 
