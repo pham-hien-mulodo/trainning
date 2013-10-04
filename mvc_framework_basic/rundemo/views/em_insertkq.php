@@ -1,8 +1,7 @@
+
 <?php
-session_start();
-require_once('../model/interface.php');
-require_once('../model/EmployeeModel.php');
-require_once('../model/SalaryModel.php');
+
+/*
 $data = array();
 $data = $_POST;
 $token = null;
@@ -27,5 +26,7 @@ $employee = new EmployeeModel();
 		}
 		else echo "insert error";
 	}
-}
+}*/
 ?>
+hehe chuẩn <?php echo $result; ?>
+

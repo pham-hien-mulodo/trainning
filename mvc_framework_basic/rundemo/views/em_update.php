@@ -1,10 +1,7 @@
 <?php
-ob_start();
+/*ob_start();
 session_start();
-require_once('../model/SalaryModel.php');
-require_once('../model/EmployeeModel.php');
 $data = array();
-
 $data['id'] = $_GET['id'];
 //$data['token'] = $_POST['token'];
 $data['process'] = 'selectById';
@@ -35,7 +32,8 @@ if (isset($_POST['name']) || isset($_POST['title']) ){
 //	}
 }
 ?>
-
+*/
+<h1> update access </h1>
 
 
 

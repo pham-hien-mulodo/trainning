@@ -1,6 +1,6 @@
 <?php
-require_once('Employee.php');
-require_once('aModel.php');
+require_once(__SITE_PATH."/model/Employee.php");
+require_once(__SITE_PATH."/model/aModel.php");
 class EmployeeModel extends aModel
 {
 	protected function calldbConnect()
@@ -11,10 +11,10 @@ class EmployeeModel extends aModel
 	{
 		return $this->dbClose();
 	}
-	protected function checkIdExit($data,$colum)
+/*	protected function checkIdExit($data,$colum)
 	{
 		return $this->checkId($data,$colum);
-	}
+	}*/
 
 //////////////DELETE///////////////
 
@@ -171,6 +171,7 @@ class EmployeeModel extends aModel
 
 	public function selectById($data)
 	{
+		$result = Null;
 		$em = new Employee($data);
 		$colums = $data['colums'];
 		try

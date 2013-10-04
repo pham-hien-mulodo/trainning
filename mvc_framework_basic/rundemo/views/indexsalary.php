@@ -1,12 +1,10 @@
 <?php 
 
 session_start();
-require_once('../model/SalaryModel.php');
-require_once('../model/EmployeeModel.php');
-$sa= new SalaryModel();
-$result = $sa->select_all();
-$token = $_SESSION['token'] =sha1(uniqid(rand(),true));
-?> <table>
+$token = $_SESSION['token'];
+?> 
+
+<table>
 <tr>
 <td> ID </td>
 <td> employee_code </td>
@@ -36,4 +34,4 @@ $token = $_SESSION['token'] =sha1(uniqid(rand(),true));
 </tr>
 <?php } ?>
 </table>
-<a href='inserts.php'><strong>New Salary</strong></a>
+<a href='index.php?rt=salary/insert'><strong>New Salary</strong></a>

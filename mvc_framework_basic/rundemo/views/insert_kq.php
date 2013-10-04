@@ -1,4 +1,4 @@
-<?php
+<?php/*
 session_start();
 require_once('interface.php');
 require_once('EmployeeModel.php');
@@ -28,5 +28,6 @@ $salary = new SalaryModel();
 		}
 		else return 0;
 	}
-}
+}*/
 ?>
+access

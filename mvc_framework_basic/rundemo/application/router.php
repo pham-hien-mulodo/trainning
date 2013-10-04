@@ -30,6 +30,7 @@ class router
 			$this->file = $this->path.'/error404.php';
 			$this->controller = 'error404';
 		}
+
 		include $this->file;
 		$class = $this->controller.'Controller';
 		$controller = new $class($this->registry);
@@ -43,7 +44,7 @@ class router
 		}
 		$controller->$action();
 	}
-	private function getController()
+	private function getController(&$file, &$controller, &$action, &$args)
 	{
 		$router = (empty($_GET['rt']))?'': $_GET['rt'];
 
@@ -53,6 +54,7 @@ class router
 		}
 		else 
 		{
+			$rt = trim($rt, '/\\');
 			$parts = explode('/',$router);
 			$this->controller = $parts[0];
 			if(isset($parts[1]))

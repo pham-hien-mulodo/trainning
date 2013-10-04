@@ -40,7 +40,7 @@ abstract class aModel
 			return true;
 		}
 	}
-	protected function checkId($data, $column)
+	protected function checkIdExit($data, $column)
 	{
 		try{
 		if($result = $this->mysqli->prepare("select count(id) as id from $column where id = ? "))
@@ -76,6 +76,7 @@ abstract class aModel
 	abstract public function update($data);
 	abstract public function delete($data);
 	abstract public function selectById($data);
+	abstract public function  select_all();
 }
 
 

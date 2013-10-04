@@ -1,7 +1,7 @@
 <?php
 class baseModel 
 {
-	private static $instance;
+	protected static $instance;
 	function __construct()
 	{
 	}
