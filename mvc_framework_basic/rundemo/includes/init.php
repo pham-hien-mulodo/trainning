@@ -1,10 +1,10 @@
 <?php
 
 include (__SITE_PATH . '/application/'. 'Controller_base.class.php');
-include (__SITE_PATH . '/application/' . 'Model_base.class.php');
+include (__SITE_PATH . '/application/' . 'aModel.php');
 include (__SITE_PATH . '/application/' . 'View_base.class.php');
-include (__SITE_PATH . '/application/' . 'registry.php');
-include (__SITE_PATH . '/application/' . 'router.php');
+//include (__SITE_PATH . '/application/' . 'registry.php');
+//include (__SITE_PATH . '/application/' . 'router.php');
 
 function __autoload($class_name)
 {
@@ -17,4 +17,4 @@ function __autoload($class_name)
 	include ($file);
 }
 
-$registry = new registry();
+//$registry = new registry();

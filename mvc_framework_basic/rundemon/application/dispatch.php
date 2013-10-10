@@ -10,14 +10,33 @@ class Dispatch
 		$url = explode('/', $uri);
 		$controller = $url[0];
 		$action = $url[1];
-	//	$arg = explode('?', $action);
-	//	$action = $arg[0];
-	//	$param = $arg[1];
-		$result = array(
-		 'controller' =>$controller,
-		 'action' =>$action,
-		 'param' =>$param
-		);
+		var_dump($uri);
+		echo count($uri);
+		
+		if(preg_match("/[?]/", $action) == false)
+		{
+			echo "param = null";
+			$result = array(
+				 'controller' =>$controller,
+				 'action' =>$action
+			);
+		}
+		else
+		{
+			$arg = explode('?', $action);
+			var_dump($arg);
+			echo count($arg);
+			$param = array_slice($arg, 1);
+			var_dump($param);
+			$action = $arg[0];
+			$param = $arg[1];
+		//	echo 'param :'.$param;
+			$result = array(
+				 'controller' =>$controller,
+				 'action' =>$action,
+				 'param'=> $param
+			);
+		}
 		 return $result;
 	}
 	public function getController($site_path)

@@ -1,17 +1,6 @@
 <?php 
 /*
-error_reporting(E_ALL);
-$site_path = realpath(dirname(__FILE__));
-
-define ('__SITE_PATH', $site_path);
-include ($site_path.'/includes/init.php');
-
-$registry->router = new router($registry);
-
-$registry->router->setPath (__SITE_PATH . '/controller');
-$registry->view = new baseView($registry);
-$registry->router->loader();
-*/
+// implement: giữ interface cho validate. chưa tách view, chưa tạo class abstract validate cho employee và salary
 $uri = '';
 $files = '';
 $controller = '';
@@ -21,8 +10,15 @@ $param = array();
 require_once("application/dispatch.php");
  error_reporting(E_ALL);
  $site_path = realpath(dirname(__FILE__));
+// echo $site_path;
  define ('__SITE_PATH', $site_path);
+// echo __SITE_PATH;
  include 'includes/init.php';
  $result = new dispatch();
- $result->getController($site_path);
-$result->loader($site_path);
+// $result->getController($site_path);
+$result->load();
+*/
+define ('__SITE_PATH','/Library/WebServer/Documents/rundemo/');
+require_once(__SITE_PATH."application/dispatch.php");
+$dispatcher = new Dispatch();
+$dispatcher->load();

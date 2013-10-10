@@ -1,6 +1,4 @@
 <?php
-require_once('implement.php');
-require_once('Salary.php');
 require_once(__SITE_PATH.'/application/aModel.php');
 class SalaryModel extends aModel
 {
@@ -11,10 +9,6 @@ class SalaryModel extends aModel
 	protected function calldbClose()
 	{
 		return $this->dbClose();
-	}
-	protected function checkIdExit($data,$colum)
-	{
-		return $this->checkId($data,$colum);
 	}
 	
 ///////////////// DELETE //////////////////

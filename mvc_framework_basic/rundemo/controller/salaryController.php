@@ -1,26 +1,41 @@
 <?php
 require_once(__SITE_PATH."/application/Controller_base.class.php");
 require_once(__SITE_PATH."/model/salaryModel.php");
-class salaryController Extends baseController
+class salaryController extends baseController
 {
 	public function index()
 	{
+		echo "access";
 		$sa= new SalaryModel();
-		
+		$this->view = new salaryView();
 		$result = $sa->select_all();
 		$this->view->token = sha1(uniqid(rand(),true));
 		$this->view->result = $result;
-		$this->view->show('indexsalary');
+		$this->view->show('sa_index');
 	}
-	public function delete()
+	public function delete($id= 12)
 	{
-		$this->registry->view->sa = new salaryModel();
-		$this->registry->view->show('deletes');
+		$data['id'] = $id;
+		$data = array();
+		$data = $_POST;
+		$token = $_SESSION['token'];
+		echo $token;
+		$data['process'] ='delete';
+		$data['colum'] = 'salary';
+		$data['colums'] = 'employee';
+		$sa = new SalaryModel();
+		$result = $sa->delete($data);
+		if(isset($result))
+		{
+		$this->view->result = $result;
+		$this->view->show('deletes');
+		}
+		else return 0;
 	}
 	public function insert()
 	{
 		$sa = new salaryModel();
-		$this->registry->view->show('inserts');
+		$this->view->show('inserts');
 		
 		$data = array();
 		$data = $_POST;
@@ -38,26 +53,28 @@ class salaryController Extends baseController
 		$data['created'] = date('Y-m-d H:i:s', $day);
 		$data['modified'] = date('Y-m-d H:i:s', $day);
 		$result = $sa->insert($data);
-		$this->registry->view->result = $result;
+		$this->view->result = $result;
 		if(isset($result))
 		{
-			$this->registry->view->show('insert_kq');
+			$this->view->show('insert_kq');
 		}
 		else return 0;}}
 	}
 	public function update()
 	{
-		$this->registry->view->sa = new salaryModel();
-		$this->registry->view->show('updates');
+		$this->view->sa = new salaryModel();
+		$this->view->show('updates');
 	}
 	public function selectById()
 	{
-		$this->registry->view->sa = new salaryModel();
-		$this->registry->view->show('selects');
+		$this->view->sa = new salaryModel();
+		$this->view->show('selects');
 	}
 	public function select_all()
 	{
-		$this->registry->view->sa = new salaryModel();
-		$this->registry->view->show('sa_select_all');
+		$this->view->sa = new salaryModel();
+		$this->view->show('sa_select_all');
 	}
+
 }
+

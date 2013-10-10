@@ -1,5 +1,5 @@
 <?php
-require_once(__SITE_PATH."/model/Employee.php");
+//require_once(__SITE_PATH."/model/Employee.php");
 require_once(__SITE_PATH."/model/aModel.php");
 class EmployeeModel extends aModel
 {

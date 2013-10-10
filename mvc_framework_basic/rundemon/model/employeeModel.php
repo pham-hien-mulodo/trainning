@@ -11,10 +11,7 @@ class EmployeeModel extends aModel
 	{
 		return $this->dbClose();
 	}
-/*	protected function checkIdExit($data,$colum)
-	{
-		return $this->checkId($data,$colum);
-	}*/
+
 
 //////////////DELETE///////////////
 

@@ -1,5 +1,5 @@
 <?php
-require_once ('interface.php');
+require_once ('implement.php');
 class Employee implements iEntity
 {
 	public $state;

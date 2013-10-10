@@ -1,56 +1,24 @@
 <?php
+require_once(__SITE_PATH."/application/salaryView.php");
+require_once(__SITE_PATH."/application/employeeView.php");
+abstract class baseView {
 
-Class baseView {
-
-/*
- * @the registry
- * @access private
- */
-private $registry;
-
-/*
- * @Variables array
- * @access private
- */
-private $vars = array();
-
-/**
- *
- * @constructor
- *
- * @access public
- *
- * @return void
- *
- *//*
-function __construct($dispatch) {
-	$this->dispatch = $dispatch;
-
+protected $vars = array();
+public function __set($data, $value)
+{
+	$this->vars[$data] = $value;
 }
-*/
 
- /**
- *
- * @set undefined vars
- *
- * @param string $index
- *
- * @param mixed $value
- *
- * @return void
- *
- */
- public function __set($index, $value)
- {
-        $this->vars[$index] = $value;
- }
-
-
+ abstract public function show($process);
+//viet lai ham: showemployee($process)
+// showsalary($process)
+//if($process == 'delete') { $path = __SITE_PATH.'/view'.'/'.$process.'.php'}
+/*
 function show($name) {
 
 	$path = __SITE_PATH . '/views' . '/' . $name . '.php';
 
-	echo '<br/>'.$path;
+//	echo '<br/>'.$path;
 	
 	if (file_exists($path) == false)
 	{
@@ -66,9 +34,12 @@ function show($name) {
 
 	include ($path);               
 }
-
-
+*/
+ 
+ 
 
 }
+
+
 
 ?>

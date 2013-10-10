@@ -10,10 +10,15 @@ class Salary implements iEntity
 	public function __construct($data=array())
 	{
 		$this->data = $data;
+//		echo $data['process'];
 		$this->state = $data['process'];
 	}
 	public function validate()
 	{
+		if($this->state == 'index')
+		{
+			return true;
+		}
 		if($this->state == 'delete' || $this->state == 'selectById')
 		{
 			$result = $this->valid_int($this->data['id'], 1,11);

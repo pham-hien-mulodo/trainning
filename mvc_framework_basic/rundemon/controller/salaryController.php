@@ -7,11 +7,11 @@ class salaryController extends baseController
 	{
 	//	echo "access";
 		$sa= new SalaryModel();
-		
+		$this->view = new salaryView();
 		$result = $sa->select_all();
 		$this->view->token = sha1(uniqid(rand(),true));
 		$this->view->result = $result;
-		$this->view->showSalary('sa_index');
+		$this->view->show('sa_index');
 	}
 	public function delete($id= 12)
 	{
