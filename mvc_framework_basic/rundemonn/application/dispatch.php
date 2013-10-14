@@ -10,12 +10,12 @@ class Dispatch
 		$url = explode('/', $uri);
 		$controller = $url[0];
 		$action = $url[1];
-	//	var_dump($uri);
-	//	echo count($uri);
+		var_dump($uri);
+		echo count($uri);
 		
 		if(preg_match("/[?]/", $action) == false)
 		{
-		//	echo "param = null";
+			echo "param = null";
 			$result = array(
 				 'controller' =>$controller,
 				 'action' =>$action
@@ -24,10 +24,10 @@ class Dispatch
 		else
 		{
 			$arg = explode('?', $action);
-	//		var_dump($arg);
-	//		echo count($arg);
+			var_dump($arg);
+			echo count($arg);
 			$param = array_slice($arg, 1);
-	//		var_dump($param);
+			var_dump($param);
 			$action = $arg[0];
 			$param = $arg[1];
 		//	echo 'param :'.$param;
@@ -65,7 +65,6 @@ class Dispatch
 		$result = $this->analyzURI();
 		$controller = $result['controller'];
 		$action = $result['action'];
-		$param = $result['param'];
 	//	echo $site_path;
 		$file = $this->getController($site_path);
 	//	var_dump($file);
@@ -82,7 +81,7 @@ class Dispatch
 		//		echo '---'.$param;
 				$result = new $controller;
 				$data['process'] = $action;
-				$result->$action($param);
+				$result->$action();
 			}
 			else echo "    no call able action   ";
 		}

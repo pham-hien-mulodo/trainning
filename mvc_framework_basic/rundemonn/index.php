@@ -14,5 +14,5 @@ require_once("application/dispatch.php");
  include 'includes/init.php';
  $result = new dispatch();
 // $result->getController($site_path);
-$result->loader($site_path);
-//$result->analyzURI();
+//$result->loader($site_path);
+$result->analyzURI();

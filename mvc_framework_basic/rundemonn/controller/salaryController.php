@@ -1,46 +1,20 @@
 <?php
 require_once(__SITE_PATH."/application/Controller_base.class.php");
 require_once(__SITE_PATH."/model/salaryModel.php");
-//require_once(__SITE_PATH."/model/employeeModel.php");
 class salaryController extends baseController
 {
 	public function index()
 	{
 	//	echo "access";
 		$sa= new SalaryModel();
+		$this->view = new salaryView();
 		$result = $sa->select_all();
 		$this->view->token = sha1(uniqid(rand(),true));
 		$this->view->result = $result;
 		$this->view->show('sa_index');
 	}
-	public function delete($id)
+	public function delete($id= 12)
 	{
-	
-	
-$data = array();
-var_dump($id);
-	$param = explode('=',$id);
-	$key = $param[0];
-	$value = $param[1];
-	$data['id']= (int)$value;
-	var_dump($data['id']);
-//$data['token'] = $_POST['token'];
-$data['process'] ='delete';
-$data['colum'] = 'salary';
-$data['colums'] = 'employee';
-
-date_default_timezone_set('Asia/Bangkok');
-$sa = new SalaryModel();
-//if(!empty($data['token']) && $data['token'] == $_SESSION['token']){
-$sa = $sa->delete($data);
-if(!isset($sa))
-{
-	echo "error !";
-}
-else echo $sa;
-//}
-/*
-		echo $_GET['id'];
 		$data['id'] = $id;
 		$data = array();
 		$data = $_POST;
@@ -56,7 +30,7 @@ else echo $sa;
 		$this->view->result = $result;
 		$this->view->show('deletes');
 		}
-		else return 0;*/
+		else return 0;
 	}
 	public function insert()
 	{
@@ -91,30 +65,11 @@ else echo $sa;
 		$this->view->sa = new salaryModel();
 		$this->view->show('updates');
 	}
-	public function selectById($id)
+	public function selectById()
 	{
-$data = array();
-//$token = $_SESSION['token'] =sha1(uniqid(rand(),true));
-var_dump($id);
-	$param = explode('=',$id);
-	$key = $param[0];
-	$value = $param[1];
-	$data['id']= (int)$value;
-	var_dump($data['id']);
-$data['process'] = 'selectById';
-date_default_timezone_set('Asia/Bangkok');
-$data['colum'] = 'salary';
-$data['colums'] = 'employee';
-$sa = new SalaryModel();
-$result= $sa->selectById($data);
-$this->view->data = $result;
-if(isset($result))
-{
+		$this->view->sa = new salaryModel();
 		$this->view->show('selects');
-		$this->view->token = sha1(uniqid(rand(),true));
-}
-	else echo "error";
-}
+	}
 	public function select_all()
 	{
 		$this->view->sa = new salaryModel();
