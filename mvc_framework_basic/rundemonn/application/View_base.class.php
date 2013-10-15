@@ -9,11 +9,12 @@ private $vars = array();
  {
         $this->vars[$index] = $value;
  }
- abstract function show($process);
+// public abstract function show($process);
+ //}
 //viet lai ham: showemployee($process)
 // showsalary($process)
 //if($process == 'delete') { $path = __SITE_PATH.'/view'.'/'.$process.'.php'}
-/*
+
 function show($name) {
 
 	$path = __SITE_PATH . '/views' . '/' . $name . '.php';
@@ -34,12 +35,6 @@ function show($name) {
 
 	include ($path);               
 }
-*/
- 
- 
 
 }
-
-
-
-?>
+ 

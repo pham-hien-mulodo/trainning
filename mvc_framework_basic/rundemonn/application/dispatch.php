@@ -4,18 +4,14 @@ class Dispatch
 {
 	public function analyzURI()
 	{
-	//	$uri = $this->setPath();
+		$param = null;
 		$url = array();
 		$uri = $_GET['uri'];
 		$url = explode('/', $uri);
 		$controller = $url[0];
 		$action = $url[1];
-		var_dump($uri);
-		echo count($uri);
-		
-		if(preg_match("/[?]/", $action) == false)
+		if($action == 'index')
 		{
-			echo "param = null";
 			$result = array(
 				 'controller' =>$controller,
 				 'action' =>$action
@@ -23,14 +19,11 @@ class Dispatch
 		}
 		else
 		{
-			$arg = explode('?', $action);
-			var_dump($arg);
-			echo count($arg);
-			$param = array_slice($arg, 1);
-			var_dump($param);
-			$action = $arg[0];
-			$param = $arg[1];
-		//	echo 'param :'.$param;
+		$result = $_GET['param'];
+		foreach($result as $key=>$value)
+		{
+			$param[$key] = $value;
+		}
 			$result = array(
 				 'controller' =>$controller,
 				 'action' =>$action,
@@ -65,6 +58,7 @@ class Dispatch
 		$result = $this->analyzURI();
 		$controller = $result['controller'];
 		$action = $result['action'];
+		
 	//	echo $site_path;
 		$file = $this->getController($site_path);
 	//	var_dump($file);
@@ -76,12 +70,13 @@ class Dispatch
 		//		echo "----action exit";
 				include $file;
 				$controller = $controller.'Controller';
-			
+			if($action =='index'){ $param = null;}
 		//		echo $action;
 		//		echo '---'.$param;
+			else{	$param = $result['param']; }
 				$result = new $controller;
 				$data['process'] = $action;
-				$result->$action();
+				$result->$action($param);
 			}
 			else echo "    no call able action   ";
 		}
