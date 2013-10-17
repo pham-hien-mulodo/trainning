@@ -2,7 +2,7 @@
 
 class SalaryView extends baseView
 {
-	 public function showSalary($process)
+	 public function show($process)
  {
 	
 	 if($process=='delete')

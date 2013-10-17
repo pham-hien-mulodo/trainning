@@ -1,20 +1,19 @@
 <?php
+require_once(__SITE_PATH."/application/salaryView.php");
+require_once(__SITE_PATH."/application/employeeView.php");
+abstract class baseView {
 
-class baseView {
+protected $vars = array();
+public function __set($data, $value)
+{
+	$this->vars[$data] = $value;
+}
 
-private $vars = array();
-
-
- public function __set($index, $value)
- {
-        $this->vars[$index] = $value;
- }
-// public abstract function show($process);
- //}
+ abstract public function show($process);
 //viet lai ham: showemployee($process)
 // showsalary($process)
 //if($process == 'delete') { $path = __SITE_PATH.'/view'.'/'.$process.'.php'}
-
+/*
 function show($name) {
 
 	$path = __SITE_PATH . '/views' . '/' . $name . '.php';
@@ -35,6 +34,12 @@ function show($name) {
 
 	include ($path);               
 }
+*/
+ 
+ 
 
 }
- 
+
+
+
+?>

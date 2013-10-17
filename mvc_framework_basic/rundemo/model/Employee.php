@@ -1,6 +1,6 @@
 <?php
 require_once ('implement.php');
-class Employee extends Validate
+class Employee implements iEntity
 {
 	public $state;
 	public $id;
@@ -57,5 +57,49 @@ class Employee extends Validate
 				return 1;
 		}
 	}
-	
+	public function valid_string($data, $minlength, $maxleng)
+	{
+		$daty = trim($data);
+		if(!empty($daty))
+		{
+			if(strlen($data)>= $minlength && strlen($data)<=$maxleng)
+			{
+				if(is_string($data))
+				{
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+	public function valid_date(&$data)
+	{
+		$daty = trim($data);
+		if(!empty($daty))
+		{
+			if(preg_match("/^(\d{4})-(\d{2})-(\d{2}) ([01][0-9]|2[0-3]):([0-5][0-9]):([0-5][0-9])$/",$data,$matches))
+			{
+				if(checkdate($matches[2], $matches[3], $matches[1]))
+				{
+				return true;
+				}
+			}
+		}
+		return false;
+	}
+	public function valid_int($data, $minlength, $maxleng)
+	{
+		$daty=trim($data);
+		if(!empty($daty))
+		{
+			if(strlen($data)>= $minlength && strlen($data)<=$maxleng)
+			{
+				if(is_int($data))
+				{
+					return true;
+				}
+			}
+		}
+		return false;
+	}
 }
