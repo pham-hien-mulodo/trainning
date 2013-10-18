@@ -29,5 +29,6 @@ $salary = new SalaryModel();
 		else return 0;
 	}
 }*/
+var_dump($result);
 ?>
 access

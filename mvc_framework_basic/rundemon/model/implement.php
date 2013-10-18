@@ -53,8 +53,8 @@ abstract class Validate
 	{
 			if(preg_match("/^([1-9]|1[0-2])$/",$data))
 			{
-				return true;
+				return 1;
 			}
-		return false;
+		return 0;
 	}
 }

@@ -34,7 +34,7 @@ abstract class aModel
 	
 //	protected $validate = null;
 
-	protected function dbConnect()
+	protected function calldbConnect()
 	{
 		
 		try

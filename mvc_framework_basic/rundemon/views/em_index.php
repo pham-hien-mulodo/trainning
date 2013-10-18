@@ -1,6 +1,24 @@
 <?php 
-ob_start();
-session_start();
+/*
+<td> <form action="index.php?uri=employee/update&param[id]=<?php echo $data['id']; ?>" method = "POST"> 
+<button><a href='index.php?uri=employee/em_update'>Update</a></button>
+ <input type='hidden' name='token' value="<?php echo $token;?>" />
+</form></td>
+<td> <form action="index.php?uri=employee/em_index.php&param[id]=<?php echo $data['id']; ?>" method = "POST"> 
+<button><a href='index.php?uri=employee/delete'>Delete</a></button>
+ <input type='hidden' name='token' value="<?php echo $token;?>" />
+</form>
+</td>
+<td> <form action="em_selectById.php&param[id]=<?php echo $data['id']; ?>" method = "POST"> 
+<button><a href='index.php?uri=employee/selectById'><strong>Detail</strong></a></button>
+ <input type='hidden' name='token' value="<?php echo $token;?>" />
+</form>
+</td>
+</tr>
+<?php } ?>
+</table>
+<a href='index.php?uri=employee/insert'><strong>New Employee</strong></a>
+*/
 ?> <table>
 <tr>
 <td> ID </td>
@@ -19,22 +37,14 @@ session_start();
 <td> <?php echo $data['title'] ?> </td>
 <td> <?php echo $data['created'] ?> </td>
 <td> <?php echo $data['modified'] ?> </td>
-<td> <form action="index.php?rt=employee/update/?id=<?php echo $data['id']; ?>" method = "POST"> 
-<button><a href='index.php?rt=employee/em_update'>Update</a></button>
+<td> <a href='index.php?uri=employee/selectById&param[token]=<?php echo $token; ?>&param[id]=<?php echo $data['id'] ?>'>Update</a></td>
+<td> <form action="index.php?uri=employee/delete?id=<?php echo $data['id']; ?>" method = "POST"> 
+<button><a href='index.php?uri=employee/delete&param[token]=<?php echo $token; ?>&param[id]=<?php echo $data['id'] ?>'>Delete</a></button>
  <input type='hidden' name='token' value="<?php echo $token;?>" />
 </form></td>
-<td> <form action="index.php?rt=employee/em_index.php/?id=<?php echo $data['id']; ?>" method = "POST"> 
-<button><a href='index.php?rt=employee/delete'>Delete</a></button>
- <input type='hidden' name='token' value="<?php echo $token;?>" />
-</form>
-</td>
-<td> <form action="em_selectById.php/?id=<?php echo $data['id']; ?>" method = "POST"> 
-<button><a href='index.php?rt=employee/selectById'><strong>Detail</strong></a></button>
- <input type='hidden' name='token' value="<?php echo $token;?>" />
-</form>
-</td>
 </tr>
 <?php } ?>
 </table>
-<a href='index.php?rt=employee/insert'><strong>New Employee</strong></a>
+<a href='index.php?uri=employee/insert&param[token]=<?php echo $token; ?>'><strong>New employee</strong></a>
+
 

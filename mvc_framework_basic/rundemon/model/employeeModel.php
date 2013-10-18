@@ -1,16 +1,8 @@
 <?php
 //require_once(__SITE_PATH."/model/Employee.php");
-require_once(__SITE_PATH."/model/aModel.php");
+require_once(__SITE_PATH.'/application/aModel.php');
 class EmployeeModel extends aModel
 {
-	protected function calldbConnect()
-	{
-		return $this->dbConnect();
-	}
-	protected function calldbClose()
-	{
-		return $this->dbClose();
-	}
 
 
 //////////////DELETE///////////////

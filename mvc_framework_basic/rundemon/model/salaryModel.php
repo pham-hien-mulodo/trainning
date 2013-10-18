@@ -2,15 +2,7 @@
 require_once(__SITE_PATH.'/application/aModel.php');
 class SalaryModel extends aModel
 {
-	protected function calldbConnect()
-	{
-		return $this->dbConnect();
-	}
-	protected function calldbClose()
-	{
-		return $this->dbClose();
-	}
-	
+
 ///////////////// DELETE //////////////////
 	public function delete($data)
 	{
@@ -46,8 +38,8 @@ class SalaryModel extends aModel
 		{
 			$this->mysqli->rollback();
 			$error = error_log(date('m/d/Y H:i:s').' '.$e->getmessage().':');
-			echo $error;
-			print_r($e->getTrace());
+		//	echo $error;
+		//	print_r($e->getTrace());
 			echo 'Error happened in the process. Please try again.';
 		}
 		$this->mysqli->close();
@@ -105,6 +97,7 @@ class SalaryModel extends aModel
 	{
 		$colum = $data['colum'];
 		$colums = $data['colums'];
+		var_dump($data);
 		$sa = new Salary($data);
 		$count = 0;
 		try
@@ -113,11 +106,12 @@ class SalaryModel extends aModel
 			$this->calldbConnect();
 			$this->mysqli->autocommit(TRUE);
 			$this->mysqli->prepare('begin');
-		/*	$result = $sa->validate($data);
+			$result = $sa->validate($data);
+			var_dump($result);
 			if(!$result)
 			{
 				throw new Exception('valid ko dung dinh dang');
-			}*/
+			}
 			$check =  $this->checkIdExit($data['id'], $colum);
 			if(!isset($check))
 			{

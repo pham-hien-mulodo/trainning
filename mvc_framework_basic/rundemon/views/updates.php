@@ -1,5 +1,5 @@
 <?php
-ob_start();
+/*ob_start();
 session_start();
 require_once('../model/SalaryModel.php');
 require_once('../model/EmployeeModel.php');
@@ -25,7 +25,7 @@ if($data['token'] == $_SESSION['token']){
 		echo "error";
 	}
 	else echo $result;
-
+*/
 }
 ?>
 
