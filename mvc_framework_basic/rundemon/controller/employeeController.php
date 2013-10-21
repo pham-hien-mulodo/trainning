@@ -26,6 +26,7 @@ class employeeController Extends baseController
 		$em = new employeeModel();
 		if(!empty($data['token']) && $data['token'] == $_SESSION['token']){
 		$this->view->result = $em->delete($data);
+		$this->view->id = $data['id'];
 		$this->view->show('em_delete'); }
 		else $this->view->show('error');
 	}

@@ -21,7 +21,6 @@ class salaryController extends baseController
 		$data[$key] = $value;
 	}
 	$data['id'] = (int)$data['id'];
-	var_dump($data['id']);
 	$data['process'] ='delete';
 	$data['colum'] = 'salary';
 	$data['colums'] = 'employee';
@@ -30,11 +29,13 @@ class salaryController extends baseController
 	$sa = new SalaryModel();
 	if(!empty($data['token']) && $data['token'] == $_SESSION['token']){
 	$sa = $sa->delete($data);
-	if(!isset($sa))
+	if(isset($sa))
 	{
-		echo "error !";
+		$this->view->result = $sa;
+		$this->view->id = $data['id'];
+		$this->view->show('em_delete');
 	}
-	else echo $sa;
+	else $this->view->show('error');
 	}
 }
 
@@ -50,6 +51,7 @@ class salaryController extends baseController
 			$this->view->token = $token;
 			$this->view->show('inserts');
 		}
+		else $this->view->show('error');
 	}
 	public function insertkq($param)
 	{
@@ -83,7 +85,7 @@ class salaryController extends baseController
 			$this->view->token = $token;
 			$this->view->show('insert_kq');
 		}
-		else return 0;}}
+		else $this->view->show('error');}}
 	}
 	public function update($param)
 {
@@ -105,11 +107,11 @@ class salaryController extends baseController
 	$day = time();
 	$result['modified'] = date('Y-m-d H:i:s', $day);
 	$result= $salary->update($result);
-	if(!isset($result))
+	if(isset($result))
 	{
 		echo "error";
 	}
-	else echo $result;
+	else $this->view->show('error');
 
 	}
 }
@@ -134,7 +136,7 @@ class salaryController extends baseController
 		$token = sha1(uniqid(rand(),true));
 		echo $token;
 	}
-	else echo "error";
+	else $this->view->show('error');
 	}
 	public function select_all()
 	{
