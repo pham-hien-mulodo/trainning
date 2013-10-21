@@ -40,42 +40,47 @@ class salaryController extends baseController
 
 
 	public function insert($param)
-	{	foreach($param as $key=>$value)
+	{	
+		$result = null;
+		if($param['token'] == $_SESSION['token'])
 		{
-			$data[$key] = $value;
+			$this->view->result = $result;
+			$token = sha1(uniqid(rand(),true));
+			$_SESSION['token'] = $token;
+			$this->view->token = $token;
+			$this->view->show('inserts');
 		}
-		var_dump($param);
-		$sa = new salaryModel();
-		$this->view->token = $param['token'];
-		$this->view->show('inserts');
 	}
 	public function insertkq($param)
 	{
-		echo "vao dc insert kw";
-		var_dump($param);
 		foreach($param as $key=>$value)
 		{
 			$data[$key] = $value;
 		}
-	//	$token = $_SESSION['token'];
 		if(empty($_POST)){
+		
 		$_SESSION['token'] =sha1(uniqid(rand(),true));
 		}
 		else {
-		if($data['token'] == $token){
+		$data= array();
+		$data = $_POST;
+		if($data['token'] == $_SESSION['token']){
 		$day = time();
+		
 		date_default_timezone_set('Asia/Bangkok');
 		$data['process'] ='insert';
 		$data['colum'] = 'salary';
 		$data['colums'] = 'employee';
 		$data['created'] = date('Y-m-d H:i:s', $day);
 		$data['modified'] = date('Y-m-d H:i:s', $day);
+		$sa = new SalaryModel();
 		$result = $sa->insert($data);
 		$this->view->result = $result;
 		if(isset($result))
 		{
+			$token = sha1(uniqid(rand(),true));
+			$_SESSION['token'] = $token;
 			$this->view->token = $token;
-			var_dump($result);
 			$this->view->show('insert_kq');
 		}
 		else return 0;}}
@@ -86,8 +91,6 @@ class salaryController extends baseController
 	{
 		$data[$key] = $value;
 	}
-//	$token = $_SESSION['token'];
-	var_dump($data);
 		$salary = new SalaryModel();
 	if($data['token'] == $_SESSION['token']){
 	$result['id'] = (int)$data['id'];
@@ -117,7 +120,6 @@ class salaryController extends baseController
 		$data[$key] = $value;
 	}
 	$token = $_SESSION['token'];
-	var_dump($token);
 	$data['process'] = 'selectById';
 	date_default_timezone_set('Asia/Bangkok');
 	$data['colum'] = 'salary';

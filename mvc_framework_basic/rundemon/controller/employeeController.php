@@ -6,16 +6,9 @@ class employeeController Extends baseController
 {
 	public function index()
 	{
-		//http://localhost/rundemo/index.php?rt=employee/index
 		$em = new EmployeeModel();
 		$result = $em->select_all();
-		//$this->registry->view->em = new employeeModel();
 		$_SESSION['token'] =sha1(uniqid(rand(),true));
-		// var_dump($result);
-		// truyen gia tri sang view
-		// trong view KHONG BAO GIO goi truc tiep den model
-		// moi xu ly du lieu voi Model PHAI DUOC THUC HIEN TAI CONTROLLER
-	//	$this->result = $result;
 		$this->view->result = $result;
 		$this->view->token = $_SESSION['token'];
 		$this->view->show('em_index');
@@ -39,28 +32,24 @@ class employeeController Extends baseController
 	public function insert($param)
 	{
 		$result = null;
-		var_dump($param['token']);
-		var_dump($_SESSION['token']);
 		if($param['token'] == $_SESSION['token'])
 		{
 			$this->view->result = $result;
 			$token = sha1(uniqid(rand(),true));
 			$_SESSION['token'] = $token;
 			$this->view->token = $token;
-		
 			$this->view->show('em_insert');
 		}
+		else $this->view->show('error');
 	}
 	public function insertkq($param)
 	{
 		$data = array();
-		foreach($param as $key=>$value)
-		{
-			$data[$key] = $value;
-		}
-		if($data['token'] == $_SESSION['token']){
+		if($_POST['token'] == $_SESSION['token']){
 		$day = time();
 		date_default_timezone_set('Asia/Bangkok');
+		$data['name']= $_POST['name'];
+		$data['title'] = $_POST['title'];
 		$data['process'] ='insert';
 		$data['colum'] = 'salary';
 		$data['colums'] = 'employee';
@@ -72,7 +61,8 @@ class employeeController Extends baseController
 		$_SESSION['token'] = $token;
 		if(isset($result))
 		{
-			$this->view->token = $token;
+			$this->view->result = $result;
+			$this->view->token = $_POST['token'];
 			$this->view->show('em_insertkq');
 		}
 		else $this->view->show('error');
@@ -86,7 +76,7 @@ class employeeController Extends baseController
 			$data[$key] = $value;
 		}
 		$em = new EmployeeModel();
-	//	if($data['token'] == $_SESSION['token']){
+		if($data['token'] == $_SESSION['token']){
 		if (isset($param['name']) || isset($param['title']) ){
 		$result['id'] = (int)$param['id'];
 		$result['process'] = 'update';
@@ -97,16 +87,15 @@ class employeeController Extends baseController
 		$result['title'] = $param['title'];
 		$day = time();
 		$result['modified'] = date('Y-m-d H:i:s', $day);
-		$result = $em->update($result);
-		$this->view->result= $result;
-		if(isset($result))
+		$result1 = $em->update($result);
+		$this->view->result= $result1;
+		if(isset($result1))
 		{
 			$this->view->token = $param['token'];
 			$this->view->show('em_update');
-			
 		}
 		else $this->view->show('error');
-	//	}
+		}
 		}
 		
 	}
@@ -139,7 +128,12 @@ class employeeController Extends baseController
 	}
 	public function select_all()
 	{
-		$this->registry->view->em = new employeeModel();
-		$this->registry->view->show('em_select_all');
+		$this->view->em = new employeeModel();
+		$this->view->show('em_select_all');
 	}
+			// var_dump($result);
+		// truyen gia tri sang view
+		// trong view KHONG BAO GIO goi truc tiep den model
+		// moi xu ly du lieu voi Model PHAI DUOC THUC HIEN TAI CONTROLLER
+	//	$this->result = $result;
 }

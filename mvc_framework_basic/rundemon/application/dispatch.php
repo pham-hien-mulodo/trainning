@@ -2,6 +2,7 @@
 
 class Dispatch
 {
+
 	public function analyzURI()
 	{
 		$param = null;
@@ -32,48 +33,28 @@ class Dispatch
 		}
 		 return $result;
 	}
-	public function getController($site_path)
-	{
-		$result = $this->analyzURI();
-	//	var_dump($result);
-		$controller = $result['controller'];
-		$action = $result['action'];
-		if(!empty($controller)&& !empty($action))
-		{
-	//		echo "---access----";
-			$files = $site_path .'/controller/'.$controller.'Controller.php';
-	//		var_dump($files);
-		}
-		else
-		{
-	//		echo "error";
-			$file = $site_path.'/'.'index.php';
-		}
-		
-		return $files;
-		
-	}
+
 	public function loader($site_path)
 	{
 		$result = $this->analyzURI();
 		$controller = $result['controller'];
 		$action = $result['action'];
-		
-	//	echo $site_path;
-		$file = $this->getController($site_path);
-	//	var_dump($file);
+		if(!empty($controller)&& !empty($action))
+		{
+			$file = $site_path .'/controller/'.$controller.'Controller.php';
+		}
+		else
+		{
+			$file = $site_path.'/'.'index.php';
+		}
 		if(is_readable($file))
 		{
-		//	echo "controller read able";
 			if(is_callable($controller, $action))
 			{
-		//		echo "----action exit";
 				include $file;
 				$controller = $controller.'Controller';
-			if($action =='index'){ $param = null;}
-		//		echo $action;
-		//		echo '---'.$param;
-			else{	$param = $result['param']; }
+				if($action =='index'){ $param = null;}
+				else{	$param = $result['param']; }
 				$result = new $controller;
 				$data['process'] = $action;
 				$result->$action($param);

@@ -1,25 +1,4 @@
-<?php 
-/*
-<td> <form action="index.php?uri=employee/update&param[id]=<?php echo $data['id']; ?>" method = "POST"> 
-<button><a href='index.php?uri=employee/em_update'>Update</a></button>
- <input type='hidden' name='token' value="<?php echo $token;?>" />
-</form></td>
-<td> <form action="index.php?uri=employee/em_index.php&param[id]=<?php echo $data['id']; ?>" method = "POST"> 
-<button><a href='index.php?uri=employee/delete'>Delete</a></button>
- <input type='hidden' name='token' value="<?php echo $token;?>" />
-</form>
-</td>
-<td> <form action="em_selectById.php&param[id]=<?php echo $data['id']; ?>" method = "POST"> 
-<button><a href='index.php?uri=employee/selectById'><strong>Detail</strong></a></button>
- <input type='hidden' name='token' value="<?php echo $token;?>" />
-</form>
-</td>
-</tr>
-<?php } ?>
-</table>
-<a href='index.php?uri=employee/insert'><strong>New Employee</strong></a>
-*/
-?> <table>
+ <table>
 <tr>
 <td> ID </td>
 <td> Name </td>
