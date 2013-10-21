@@ -21,33 +21,43 @@ class employeeController Extends baseController
 		$this->view->show('em_index');
 		
 	}
-	public function delete()
+	public function delete($param)
 	{
-		echo "access";
 		date_default_timezone_set('Asia/Bangkok');
 		$data = array();
 		$data['process']= 'delete';
-		$data['id'] = (int)$_POST['id'];
-		$data['token'] = $_POST['token'];
+		$data['id'] = (int)$param['id'];
+		$data['token'] = $param['token'];
 		$data['colum'] = 'salary';
 		$data['colums'] = 'employee';
 		$em = new employeeModel();
 		if(!empty($data['token']) && $data['token'] == $_SESSION['token']){
-		$this->registry->view->result = $em->delete($data);
-		$this->registry->view->show('index.php?rt=employee/em_delete'); }
+		$this->view->result = $em->delete($data);
+		$this->view->show('em_delete'); }
+		else $this->view->show('error');
 	}
-	public function insert()
+	public function insert($param)
 	{
-		$this->registry->view->em = new employeeModel();
-		$this->registry->view->show('em_insert');
-		$data = array();
-		$data = $_POST;
-		var_dump($data);
-		if(empty($_POST)){
-		$_SESSION['token'] =sha1(uniqid(rand(),true));
+		$result = null;
+		var_dump($param['token']);
+		var_dump($_SESSION['token']);
+		if($param['token'] == $_SESSION['token'])
+		{
+			$this->view->result = $result;
+			$token = sha1(uniqid(rand(),true));
+			$_SESSION['token'] = $token;
+			$this->view->token = $token;
+		
+			$this->view->show('em_insert');
 		}
-		else {
-		$em = new EmployeeModel();
+	}
+	public function insertkq($param)
+	{
+		$data = array();
+		foreach($param as $key=>$value)
+		{
+			$data[$key] = $value;
+		}
 		if($data['token'] == $_SESSION['token']){
 		$day = time();
 		date_default_timezone_set('Asia/Bangkok');
@@ -56,46 +66,46 @@ class employeeController Extends baseController
 		$data['colums'] = 'employee';
 		$data['created'] = date('Y-m-d H:i:s', $day);
 		$data['modified'] = date('Y-m-d H:i:s', $day);
+		$em = new employeeModel();
 		$result = $em->insert($data);
-		$this->registry->view->result = $result;
+		$token = sha1(uniqid(rand(),true));
+		$_SESSION['token'] = $token;
 		if(isset($result))
 		{
-			$this->registry->view->show('em_insertkq');
+			$this->view->token = $token;
+			$this->view->show('em_insertkq');
 		}
-		else $this->registry->view->show('error');
+		else $this->view->show('error');
 	}
-}
 	}
-	public function update()
+	public function update($param)
 	{
 		$data = array();
-		var_dump($_GET);
-		$data['id'] = $_GET['rt'];
-		$data['token'] = $_POST['token'];
-		$data['process'] = 'selectById';
-		date_default_timezone_set('Asia/Bangkok');
-		$data['colum'] = 'salary';
-		$data['colums'] = 'employee';
-		$em = new EmployeeModel();
-		$data= $em->selectById($data);
+		foreach($param as $key=>$value)
+		{
+			$data[$key] = $value;
+		}
 		$em = new EmployeeModel();
 	//	if($data['token'] == $_SESSION['token']){
-		if (isset($_POST['name']) || isset($_POST['title']) ){
-		$result['id'] = $data['id'];
+		if (isset($param['name']) || isset($param['title']) ){
+		$result['id'] = (int)$param['id'];
 		$result['process'] = 'update';
 		date_default_timezone_set('Asia/Bangkok');
 		$result['colum'] = 'salary';
 		$result['colums'] = 'employee';
-		$result['name'] = $_POST['name'];
-		$result['title'] = $_POST['title'];
+		$result['name'] = $param['name'];
+		$result['title'] = $param['title'];
 		$day = time();
 		$result['modified'] = date('Y-m-d H:i:s', $day);
-		$$this->registry->view->result= $em->update($result);
-		if(!isset($result))
+		$result = $em->update($result);
+		$this->view->result= $result;
+		if(isset($result))
 		{
-			$this->registry->view->show('error');
+			$this->view->token = $param['token'];
+			$this->view->show('em_update');
+			
 		}
-		else $this->registry->view->show('em_update');
+		else $this->view->show('error');
 	//	}
 		}
 		
@@ -103,11 +113,12 @@ class employeeController Extends baseController
 	public function selectById($param)
 	{
 		foreach($param as $key=>$value)
+		{
+			$data[$key] = $value;
+		}
+	if($param['token'] == $_SESSION['token'])
 	{
-		$data[$key] = $value;
-	}
-	$token = $_SESSION['token'];
-	var_dump($token);
+	$token = $param['token'];
 	$data['process'] = 'selectById';
 	date_default_timezone_set('Asia/Bangkok');
 	$data['colum'] = 'salary';
@@ -115,14 +126,16 @@ class employeeController Extends baseController
 	$em = new EmployeeModel();
 	$result= $em->selectById($data);
 	$this->view->data = $result;
-	if(isset($result))
-	{
-		$this->view->token = $token;
-		$this->view->show('em_selectById');
-		$token = sha1(uniqid(rand(),true));
-		echo $token;
+	$token = sha1(uniqid(rand(),true));
+	$_SESSION['token'] = $token;
+		if(isset($result))
+		{
+			$this->view->token = $token;
+			$this->view->show('em_selectById');
+		}
+		else echo "error";
 	}
-	else echo "error";
+	else $this->view->show('em_index'); 
 	}
 	public function select_all()
 	{
