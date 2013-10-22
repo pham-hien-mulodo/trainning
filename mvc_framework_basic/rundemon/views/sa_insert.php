@@ -13,6 +13,6 @@
 <input type='submit' name='submit' value='Submit' /> 
  <input type='hidden' name='token' value="<?php echo $token;?>" />
 </form>
-
+ <button><a href='index.php?uri=salary/index'><strong>Back</strong></a></button>
 </body>
 </html>

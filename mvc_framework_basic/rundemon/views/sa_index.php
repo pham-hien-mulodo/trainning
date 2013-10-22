@@ -25,12 +25,18 @@
 <td> <?php echo $data['payment'] ?> </td>
 <td> <?php echo $data['created'] ?> </td>
 <td> <?php echo $data['modified'] ?> </td>
-<td> <a href='index.php?uri=salary/selectById&param[token]=<?php echo $token; ?>&param[id]=<?php echo $data['id'] ?>'>Update</a></td>
-<td> <form action="index.php?uri=salary/delete?id=<?php echo $data['id']; ?>" method = "POST"> 
-<button><a href='index.php?uri=salary/delete&param[token]=<?php echo $token; ?>&param[id]=<?php echo $data['id'] ?>'>Delete</a></button>
- <input type='hidden' name='token' value="<?php echo $token;?>" />
+<td> <form action="index.php?uri=salary/selectById&param[id]=<?php echo $data['id']; ?>" method = "POST"> 
+ <input type='submit' name='Update' value='Update' /> 
+<input type='hidden' name='token' value="<?php echo $token;?>" />
+</form></td>
+<td>  <form action="index.php?uri=salary/delete&param[id]=<?php echo $data['id']; ?>" method = "POST"> 
+ <input type='submit' name='Delete' value='delete' /> 
+<input type='hidden' name='token' value="<?php echo $token;?>" />
 </form></td>
 </tr>
 <?php } ?>
 </table>
-<a href='index.php?uri=salary/insert&param[token]=<?php echo $token; ?>'><strong>New Salary</strong></a>
+<form action="index.php?uri=salary/insert" method = "POST"> 
+ <input type='submit' name='Insert' value='insert' /> 
+<input type='hidden' name='token' value="<?php echo $token;?>" />
+</form>

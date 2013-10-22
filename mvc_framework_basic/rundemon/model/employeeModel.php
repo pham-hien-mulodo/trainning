@@ -58,8 +58,8 @@ class EmployeeModel extends aModel
 		{
 			$this->mysqli->rollback();
 			$error = error_log(date('m/d/Y H:i:s').' '.$e->getmessage().':');
-			echo $error;
-			print_r($e->getTrace());
+		//	echo $error;
+		//	print_r($e->getTrace());
 			echo 'Error happened in the process. Please try again.';
 		}
 		$this->mysqli->close();
@@ -90,7 +90,6 @@ class EmployeeModel extends aModel
 				$data[$key] = htmlspecialchars($this->mysqli->real_escape_string($value));
 			}
 			$sql = "INSERT INTO $colums (name , title, created, modified) VALUES ('".$data['name']."','".$data['title']."' ,'".$data['created']."', '".$data['modified']."')";
-			var_dump($sql);
 			if(!$result = $this->mysqli->query($sql))
 			{
 				throw new Exception('insert employee no access');
@@ -101,8 +100,8 @@ class EmployeeModel extends aModel
 		{
 			$this->mysqli->rollback();
 			$error = error_log(date('m/d/Y H:i:s').' '.$e->getmessage().':');
-			echo $error;
-			print_r($e->getTrace());
+		//	echo $error;
+		//	print_r($e->getTrace());
 			echo 'Error happened in the process. Please try again.';
 		}
 		$this->mysqli->close();
@@ -147,8 +146,8 @@ class EmployeeModel extends aModel
 		{
 			$this->mysqli->rollback();
 			$error = error_log(date('m/d/Y H:i:s').' '.$e->getmessage().':');
-			echo $error;
-			print_r($e->getTrace());
+	//		echo $error;
+	//		print_r($e->getTrace());
 			echo 'Error happened in the process. Please try again.';
 		}
 		
@@ -183,17 +182,13 @@ class EmployeeModel extends aModel
 				throw new Exception('select employee no access');
 			}
 			$result = $result->fetch_array(MYSQLI_ASSOC);
-	/*		foreach ($result as $key =>$value)
-			{
-				$result[$key] = htmlspecialchars_decode($value);
-			}*/
 			$this->mysqli->commit();
 		} catch(Exception $e)
 		{
 			$this->mysqli->rollback();
 			$error = error_log(date('m/d/Y H:i:s').' '.$e->getmessage().':');
-			echo $error;
-			print_r($e->getTrace());
+	//		echo $error;
+	//		print_r($e->getTrace());
 			echo 'Error happened in the process. Please try again.';
 		}
 		$this->mysqli->close();
@@ -208,11 +203,6 @@ class EmployeeModel extends aModel
 		if(!isset($result)){ echo "eror";}
 		
 		while($row = $result->fetch_array()){  
-			/*
-			foreach ($row as $key =>$value)
-			{
-				$row[$key] = htmlspecialchars_decode($value);
-			}*/
 			$data[] = $row;
 		}
 		return $data;

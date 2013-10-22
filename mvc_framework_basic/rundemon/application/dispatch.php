@@ -11,7 +11,7 @@ class Dispatch
 		$url = explode('/', $uri);
 		$controller = $url[0];
 		$action = $url[1];
-		if($action == 'index')
+		if($action == 'index' || $action =='insert' || $action == 'insertkq')
 		{
 			$result = array(
 				 'controller' =>$controller,
@@ -34,18 +34,18 @@ class Dispatch
 		 return $result;
 	}
 
-	public function loader($site_path)
+	public function load()
 	{
 		$result = $this->analyzURI();
 		$controller = $result['controller'];
 		$action = $result['action'];
 		if(!empty($controller)&& !empty($action))
 		{
-			$file = $site_path .'/controller/'.$controller.'Controller.php';
+			$file = __SITE_PATH.'/controller/'.$controller.'Controller.php';
 		}
 		else
 		{
-			$file = $site_path.'/'.'index.php';
+			$file = __SITE_PATH.'/'.'index.php';
 		}
 		if(is_readable($file))
 		{
@@ -53,7 +53,8 @@ class Dispatch
 			{
 				include $file;
 				$controller = $controller.'Controller';
-				if($action =='index'){ $param = null;}
+				if($action =='index' ||  $action =='insert' || $action == 'insertkq')
+					{ $param = null;}
 				else{	$param = $result['param']; }
 				$result = new $controller;
 				$data['process'] = $action;
