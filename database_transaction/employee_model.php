@@ -41,8 +41,8 @@ class employee_model
 		} catch(Exception $e)
 		{
 			$error = error_log(date('m/d/Y H:i:s').' '.$e->getmessage().':');
-			echo $error;
-			print_r($e->getTrace());
+		//	echo $error;
+		//	print_r($e->getTrace());
 			echo 'Error happened in the process. Please try again.';
 		}
 		return $count;
@@ -493,7 +493,7 @@ class employee_model
 			echo 'Error happened in the process. Please try again.';
 		}
 		mysql_close($dbcon);
-		//return $count;
+ 		//return $count;
 	}
 
 }

@@ -35,11 +35,12 @@ class EmployeeModel extends aModel
 			$this->calldbConnect();
 			mysql_query('set autocommit = 0');
 			mysql_query('begin');
-			$check = $this->checkIdExit($data['id'],$colums);
+	/*		$check = $this->checkIdExit($data['id'],$colums);
 			if($check == 0)
 			{
 				throw new Exception('id no exit');
 			}
+			*/
 			$result = mysql_query("DELETE FROM $colum WHERE employee_code = '".$data['id']."'");
 			$count = mysql_affected_rows();
 			if(!isset($result))
