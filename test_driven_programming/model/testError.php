@@ -32,5 +32,4 @@ class testError extends PHPUnit_Framework_TestCase
 		$this->assertArrayHasKey('name' , $result);
 		$this->assertArrayHasKey('title', $result);
 	}
-	public function test
 }
