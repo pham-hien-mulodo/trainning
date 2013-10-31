@@ -1,6 +1,6 @@
 <?php
 ////// test pass  ////////////////
-
+require_once("/Library/WebServer/Documents/rundemon/model/employeeModel.php");
 class testRundemon extends PHPUnit_Framework_TestCase
 {
 /*	public function testDelete()
@@ -22,6 +22,7 @@ class testRundemon extends PHPUnit_Framework_TestCase
 		$data['process'] = 'delete';
 		$data['colum']= 'salary';
 		$data['colums'] = 'employee';
+
 		$em = new EmployeeModel();
 		$result = $em->delete($data);
 		$this->assertInstanceOf($em, new EmployeeModel);
@@ -33,6 +34,7 @@ class testRundemon extends PHPUnit_Framework_TestCase
 		$data = array();
 		$this->assertArrayHasKey('name', $data);
 		$this->assertArrayHasKey('title', $data);
+
 		$em = new EmployeeModel();
 		$result = $em->insert($data);
 		$this->assertArrayNotHasKey('id', $data);
@@ -57,7 +59,7 @@ class testRundemon extends PHPUnit_Framework_TestCase
 		$data= array();
 		$em = new EmployeeModel();
 		$result = $em->update($data);
-		$this->assertEquals(1, $result);
+		$this->assertGreaterThan(0, $result1);
 		
 	}
 	public function testUpdateSa()
