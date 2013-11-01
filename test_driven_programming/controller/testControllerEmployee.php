@@ -10,7 +10,7 @@ class testControllerEmployee extends PHPUnit_Framework_TestCase
 	public function testIndex()
 	{
 		$emCon = new employeeController();
-		$this->view = new EmployeeView();
+//		$this->view = new EmployeeView();
 		$this->assertInstanceOf('employeeController', $emCon);
 		$result = $emCon->index();
 	}
@@ -62,6 +62,10 @@ class testControllerEmployee extends PHPUnit_Framework_TestCase
 		$this->assertArrayHasKey('name', $_POST);
 		$this->assertArrayHasKey('title', $_POST);
 		$this->assertNotNull("_SESSION['token']");
+		$this->assertNotNull("_POST['name']");
+		$this->assertNotNull("_POST['title']");
+		$this->assertNotNull("_POST['token']");
+		$this->assertNotNull("_SESSION['token']");
 		$result = $emCon->insertkq($_POST, $_SESSION['token']);
 	}
 
@@ -76,9 +80,11 @@ class testControllerEmployee extends PHPUnit_Framework_TestCase
 		$_SESSION['token'] = '12345asd6789';
 		$this->assertNotNull('_POST');
 		$this->assertNotNull("_SESSION['token']");
+		$this->assertNotNull("_POST['name']");
+		$this->assertNotNull("_POST['title']");
+		$this->assertNotNull("_POST['token']");
+		$this->assertNotNull("_SESSION['token']");
 		$this->assertEquals($_POST['token'], $_SESSION['token']);
-		$this->assertFalse(empty($_POST['name']));
-		$this->assertFalse(empty($_POST['title']));
 		$emCon = new employeeController();
 		$result = $emCon->update($param, $_POST, $_SESSION['token']);
 	}
@@ -95,11 +101,11 @@ class testControllerEmployee extends PHPUnit_Framework_TestCase
 		$emCon = new employeeController();
 		$result = $emCon->selectById($param, $_POST, $_SESSION['token']);
 	}
-/*
+
 	public function testSelect_all()
 	{
 		$emCon = new employeeController();
 		$result = $emCon->select_all();
 	}
-*/
+
 }

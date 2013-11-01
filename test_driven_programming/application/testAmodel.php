@@ -13,7 +13,7 @@ class testControllerBase extends PHPUnit_Framework_TestCase
 	}
 	public function testGetInstance()
 	{
-		$this->assertInstanceOf('instance', new aModel);
+		$this->assertInstanceOf('aModel', $instance);
 	}
 	public function testGet($name)
 	{
@@ -21,7 +21,7 @@ class testControllerBase extends PHPUnit_Framework_TestCase
 		$this->assertFileExists($file);
 		include ($file);
 		$class = str_replace("model","",strtolower($name))."Model";
-		$this->assertInstanceOf(new class, $this->get($name));
+		$this->assertInstanceOf('class', $this->get($name));
 	}
 	public function testErrorGet()
 	{
